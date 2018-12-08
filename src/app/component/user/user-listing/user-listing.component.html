@@ -1,0 +1,23 @@
+<div class="container mt-5">
+  <div class="row">
+    <h3>Users List</h3>
+    <p-table [columns]="cols" [value]="userSet" [paginator]="true" [rows]="50">
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th *ngFor="let col of columns">{{col.header}}</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-a="rowIndex" let-columns="columns">
+        <tr>
+          <td title="{{rowData[col.field]}}" tooltipPosition="top" placeholder="Top" 
+            *ngFor="let col of columns">
+            {{col.field == 'sno' ? a + 1:''}}
+            {{col.field == 'gender' ? rowData[col.field] == 0 ? 'Male':'Female':''}}
+            {{rowData[col.field]}}
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+

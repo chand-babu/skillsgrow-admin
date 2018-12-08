@@ -1,0 +1,149 @@
+<div class="container">
+  <div class="row default-margin-top">
+    <div *ngIf="authorDetails" class="col-12">
+      <form autocomplete="off" #authorDetailsForm="ngForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label>Author Name <span class="asterik">*</span></label>
+          <input type="text" class="form-control" name="name" #authorName="ngModel"
+          [(ngModel)]="authorobj.authorName" required>
+          <div class="error-message" *ngIf="authorName.invalid && authorName.touched">Field is required</div>
+        </div>
+        <div class="form-group">
+          <label>Author Email <span class="asterik">*</span></label>
+          <input type="text" class="form-control" name="email" #authorEmail="ngModel"
+          pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+          [(ngModel)]="authorobj.authorEmail" required>
+          <div class="error-message" *ngIf="authorEmail.invalid && authorEmail.touched">Invalid Email format</div>
+        </div>
+        <div class="form-group">
+          <label>Author Phone <span class="asterik">*</span></label>
+          <input type="text" class="form-control" name="phone" #authorPhone="ngModel"
+          pattern="^((\\+91-?)|0)?[0-9]{10}$"
+          [(ngModel)]="authorobj.authorPhone" required>
+          <div class="error-message" *ngIf="authorPhone.invalid && authorPhone.touched">Invalid Phone Number</div>
+        </div>
+        <div class="form-group">
+          <label>Author Biography <span class="asterik">*</span> (Minimum 150 Characters)</label>
+          <textarea rows="5" class="form-control" name="address" #authorBiography="ngModel"
+          [(ngModel)]="authorobj.authorBiography"
+          minlength="150" required></textarea>
+          <div class="error-message" *ngIf="authorBiography.invalid && authorBiography.touched">Maximum 150 characters required</div>
+        </div>
+        <div class="form-group">
+          <label>Pricing of course <span class="asterik">*</span></label>
+          <select class="form-control form-group" name="coursePrice" #coursePrice="ngModel"
+          [(ngModel)]="authorobj.coursePrice" (change)="pricingType(coursePrice.name)" required>
+            <option value="">Choose Pricing Type</option>
+            <option value="Free">Free</option>
+            <option value="Paid">Paid</option>
+          </select>
+          <div class="error-message" *ngIf="coursePrice.invalid && coursePrice.touched">Field is required</div>
+          <div *ngIf="paidCourseInput">
+              <input type="text" class="form-control" name="course" placeholder="Enter the amount" #courseRateValue="ngModel"
+              [(ngModel)]="courseRate" required>
+              <div class="error-message" *ngIf="courseRateValue.invalid && courseRateValue.touched">Field is required</div>
+            </div>
+        </div>
+        <div class="form-group">
+          <label>Certificate Type <span class="asterik">*</span></label>
+          <select class="form-control form-group" name="certificatePrice" #certificatePrice="ngModel"
+          [(ngModel)]="authorobj.certificatePrice" (change)="pricingType(certificatePrice.name)" required>
+            <option value="">Choose Certificate Type</option>
+            <option value="Free">Free</option>
+            <option value="Paid">Paid</option>
+          </select>
+          <div class="error-message" *ngIf="certificatePrice.invalid && certificatePrice.touched">Field is required</div>
+          <div *ngIf="paidCertificateInput">
+            <input type="text" class="form-control" name="certificate" placeholder="Enter the amount" #certificateRateValue="ngModel"
+            [(ngModel)]="certificateRate" required>
+            <div class="error-message" *ngIf="certificateRateValue.invalid && certificateRateValue.touched">Field is required</div>
+          </div>
+        </div>
+        <div class="form-group text-right">
+          <button class="btn btn-primary" [disabled]="authorDetailsForm.invalid">Save and Continue</button>
+        </div>
+      </form>
+    </div>
+    <div *ngIf="confirmationCourse" class="col text-center">
+      <h1>Are you sure that all the course material is correct and is ready to save</h1>
+      <button style="margin-right: 15px" type="button" class="btn btn-lg btn-primary default-margin-top"
+      (click)="openLg(content)">Preview Course</button>
+      <button type="button" class="btn btn-lg btn-success default-margin-top" (click)="confirmationSubmit()">Save Course</button>
+      <h5 class="default-margin-top"><span>If not please visit tabs to be changes.</span></h5>
+    </div>
+  </div>
+
+  <ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h4 class="modal-title">Course Preview</h4>
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body" *ngFor="let x of coursePreview">
+      <h2>{{x.courseName}}</h2>
+      <p [innerHtml]="editorContent"></p>
+      <div class="text-right">
+        <div style="color: green;font-weight: bold">
+          <span>Updated : <i class="fa fa-check"></i></span>
+        </div>
+        <div style="color: red;font-weight: bold">
+            <span>Not Updated : <i class="fa fa-times"></i></span>
+        </div>
+      </div>
+      <div *ngFor="let y of x.timeline">
+        <h4>{{y.title}}</h4>
+        <table class="table table-bordered">
+          <thead>
+            <th>S.no</th>
+            <th>Topics</th>
+            <th>Learning Materials</th>
+            <th>Test</th>
+          </thead>
+          <tbody>
+            <tr *ngFor="let z of y.topics;let i = index">
+              <td>{{i+1}}</td>
+              <td>{{z.subTopics}}</td>
+              <td [ngStyle]="{'color':(z.description) ? 'green' : 'red' }">
+                <i class="fa" [ngClass]="{
+                  'fa-check':z.description,
+                  'fa-times':!z.description }"></i>
+              </td>
+              <td [ngStyle]="{'color':(z.questions) ? 'green' : 'red' }">
+                  <i class="fa" [ngClass]="{
+                    'fa-check':z.questions,
+                    'fa-times':!z.questions }"></i>
+                </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+          <h4>Author Details</h4>
+          <table class="table table-bordered">
+            <thead>
+              <th>Name</th>
+              <th>Phone</th>
+              <th>Email</th>
+              <th>Course Type</th>
+              <th>Certificate Type</th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let y of x.authorDetails">
+                <td>{{y.authorName}}</td>
+                <td>{{y.authorPhone}}</td>
+                <td>{{y.authorEmail}}</td>
+                <td>{{y.coursePrice}}</td>
+                <td>{{y.certificatePrice}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-success" (click)="c('Close click')">Close</button>
+    </div>
+  </ng-template>
+  <!-- <button class="btn btn-outline-primary mb-2 mr-2" (click)="openLg(content)">Large modal</button> -->
+
+</div>

@@ -1,0 +1,30 @@
+<div class="container default-margin-top">
+  <div class="row">
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead>
+          <th>S.no</th>
+          <th>Course Name</th>
+          <th>Actions</th>
+          <th>Add FAQ</th>
+          <th>Status</th>
+        </thead>
+        <tbody *ngFor="let x of courseListData">
+          <tr class="text-center">
+            <td colspan="5"><b>{{x.categoryName}}</b></td>
+          </tr>
+          <tr *ngFor="let y of x.course; let i = index">
+            <td>{{i+1}}</td>
+            <td>{{y.courseName}}</td>
+            <td style="cursor: pointer"><i class="fa fa-pencil mr-2" (click)="courseEdit(y)"></i>
+              <i class="fa fa-times" (click)="deleteCourse(y._id)"></i></td>
+            <td><button (click)="addCourseFaq(y._id, y)" class="btn btn-success">ADD FAQ</button></td>
+            <td><button 
+              [class]="(y.active == true) ? 'btn btn-success' : 'btn btn-danger'" 
+              (click)="changeCourseStatus(y._id, y.active)">{{(y.active == true) ? 'Active' : 'Inactive'}}</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

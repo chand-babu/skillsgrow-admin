@@ -1,0 +1,96 @@
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <h4 class="text-center">Add Questions</h4>
+      <div class="text-right">
+        <span (click)="saveAndContinue()" class="btn btn-info">Save & Continue</span>
+      </div>
+      <form autocomplete="off" #questionForm="ngForm" (ngSubmit)="onSubmit();questionForm.reset()">
+        <div class="form-group">
+          <label><b>Question Type</b> <span class="asterik">*</span></label>
+          <select class="form-control" name="questionStatus" [(ngModel)]="questionsFormobj.questionStatus"
+            #questionStatus="ngModel" (change)="questionTypeCheckStatus(questionsFormobj.questionStatus)" required>
+            <option value="">Choose question type</option>
+            <option value="0">Choose/Multiple</option>
+            <option value="1">Passage</option>
+            <option value="2">Image based question</option>
+            <option value="3">Audio based question</option>
+          </select>
+          <div class="error-message" *ngIf="questionStatus.touched && questionStatus.invalid">Question Status is
+            required</div>
+        </div>
+
+        <div *ngIf="displayInstructionAndTitle" class="form-group">
+          <label><b>Title</b> <span class="asterik">*</span></label>
+          <input class="form-control" name="passageTitle" [(ngModel)]="questionsFormobj.passageTitle" #passageTitle="ngModel"
+            required>
+          <div class="error-message" *ngIf="passageTitle.touched && passageTitle.invalid">Passage title is required</div>
+        </div>
+
+        <div *ngIf="displayInstructionAndTitle" class="form-group">
+          <label><b>Instruction</b> <span class="asterik">*</span></label>
+          <textarea class="form-control" name="instruction" [(ngModel)]="questionsFormobj.instruction"
+            #instruction="ngModel" required></textarea>
+          <div class="error-message" *ngIf="instruction.touched && instruction.invalid">Instruction is required</div>
+        </div>
+
+        <div *ngIf="passageTextBox" class="form-group">
+          <label><b>Passage</b> <span class="asterik">*</span></label>
+          <textarea class="form-control" name="passage" [(ngModel)]="questionsFormobj.passage" #passage="ngModel"
+            required></textarea>
+          <div class="error-message" *ngIf="passage.touched && passage.invalid">passage is required</div>
+        </div>
+
+        <div *ngIf="imageTextBox" class="form-group">
+          <label><b>Upload {{ imageText == true ? 'Image':'Audio' }} </b> <span class="asterik">*</span></label>
+          <input type="file" class="form-control" name="imageQuestion" [(ngModel)]="imageQuestionvalidation"
+            #imageQuestion="ngModel" (change)="uploadImage($event)" required>
+          <div class="error-message" *ngIf="imageQuestion.touched && imageQuestion.invalid">{{ imageText == true ? 'Image':'Audio' }} is required</div>
+          <div class="error-message" *ngIf="formateErr">Invalid File Format</div>
+        </div>
+
+        <div [class]="(passageTextBox) ? 'passage-question-design row' : 'row'">
+          <div *ngIf="passageTextBox" class="col-12">
+            <p><b>Note : </b>User can add multiple of question</p>
+          </div>
+          <div class="col-12">
+            <label><b>Question</b> <span class="asterik">*</span></label>
+            <input class="form-control" name="question" [(ngModel)]="questionsFormobj.question" #question="ngModel">
+            <div class="error-message" *ngIf="question.touched && question.invalid">Question is required</div>
+          </div>
+
+          <div class="col-10 form-group">
+            <label><b>Options</b> <span class="asterik">*</span></label>
+            <input class="form-control" name="options" [(ngModel)]="questionsFormobj.options" #options="ngModel">
+            <div class="error-message" *ngIf="options.touched && options.invalid">options is required</div>
+          </div>
+          <div class="col-2">
+            <div class="options-btn" (click)="questionOptions(options);options.reset()"><i class="fa fa-plus"></i>
+              Add</div>
+          </div>
+
+          <div class="col-12 form-group">
+            <label><b>Answer</b> <span class="asterik">*</span></label>
+            <input class="form-control" name="answer" [(ngModel)]="questionsFormobj.answer" #answer="ngModel">
+            <div class="error-message" *ngIf="answer.touched && answer.invalid">Answer is required</div>
+          </div>
+
+          <div class="col-12 form-group">
+            <label><b>Time</b> <span class="asterik">*</span></label>
+            <input type="number" class="form-control" placeholder="Timing in seconds" name="time" [(ngModel)]="questionsFormobj.time"
+              #time="ngModel">
+            <div class="error-message" *ngIf="time.touched && time.invalid">timing is required</div>
+          </div>
+
+          <div *ngIf="passageTextBox" class="col-12 text-right">
+            <div (click)="addPassageQuestion();question.reset();answer.reset();time.reset()" class="btn btn-success">Submit passage question</div>
+          </div>
+        </div>
+
+        <div class="form-group text-right">
+          <button class="btn btn-danger" [disabled]="questionForm.invalid">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

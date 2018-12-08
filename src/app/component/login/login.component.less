@@ -1,0 +1,40 @@
+app-login {
+    .login-body {
+        background-color: @primary-color;
+        min-height: 100vh;
+        .ch-login{
+            margin: auto;
+            margin-top: 10%;
+            background-color: @white;
+            padding: 30px;
+            img{
+                padding:10px;
+            }
+            .login-button { 
+                button {
+                    background-color: @primary-color;
+                    color: @white;
+                    &:hover {
+                        background-color: @white;
+                        border-color: @primary-color;
+                        color: @primary-color;
+                    }
+                }
+            }
+        }
+
+        .common-input{
+        border: 1px solid black;
+        border-radius: 0%;
+        height: 45px;
+
+        &:focus, &:active {
+            border: 0;
+            box-shadow: 0 0 0 0.1rem @primary-color;
+        }
+        }
+
+    }
+
+}
+

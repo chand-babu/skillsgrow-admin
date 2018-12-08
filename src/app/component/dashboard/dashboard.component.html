@@ -1,0 +1,27 @@
+<div class="container">
+    <div class="row default-margin-top">
+        <div class="col">
+            <p-card styleClass="text-center" subtitle="Courses" title="65"></p-card>
+        </div>
+        <div class="col">
+            <p-card styleClass="text-center" subtitle="Authors" title="12"></p-card>
+        </div>
+        <div class="col">
+            <p-card styleClass="text-center" subtitle="Active Users" title="500"></p-card>
+        </div>
+        <div class="col">
+            <p-card styleClass="text-center" subtitle="Live Tests" title="13"></p-card>
+        </div>
+        <div class="col">
+            <p-card styleClass="text-center" subtitle="Open Internships" title="121"></p-card>
+        </div>
+    </div>
+    <div class="row default-margin-top">
+        <div class="col">
+            <p-chart type="bar" [data]="barData" [options]="barOptions"></p-chart>
+        </div>
+        <div class="col">
+            <p-chart type="pie" [data]="pieData" [options]="pieOptions"></p-chart>
+        </div>
+    </div>
+</div>

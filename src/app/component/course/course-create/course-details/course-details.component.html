@@ -1,0 +1,187 @@
+<form autocomplete="off" class="container" #courseDetails="ngForm" (ngSubmit)="onSubmit()">
+  <div class="row default-margin-top">
+    <div class="col-md-12">
+      <div class="form-group">
+        <label>Course For <span class="asterik">*</span></label>
+        <select class="form-control" name="courseFor" [(ngModel)]="courseForField" #courseFor="ngModel" required>
+          <option value="">Select Course For</option>
+          <option value="0">Skillsgrow Training programs</option>
+          <option value="1">Skillsgrow Internship Programs</option>
+        </select>
+        <div class="error-message" *ngIf="courseFor.invalid && courseFor.touched">Field is required</div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-group">
+        <label>Select Course Category <span class="asterik">*</span></label>
+        <p-dropdown [options]="courseCategoryList" name="something" [(ngModel)]="selectCategoryList" [style]="{'width':'100%'}"
+          #category="ngModel" placeholder="Select Course" optionLabel="categoryName" [showClear]="true" required></p-dropdown>
+        <div class="error-message" *ngIf="category.invalid && category.touched">Field is required</div>
+      </div>
+    </div>
+  </div>
+  <div class="row default-margin-top">
+    <div class="col">
+      <div class="form-group">
+        <label>Course Name <span class="asterik">*</span></label>
+        <input type="text" class="form-control" name="courseName" [(ngModel)]="courseCategoryForm.courseName"
+          #courseName="ngModel" required />
+        <div class="error-message" *ngIf="courseName.invalid && courseName.touched">Field is required</div>
+      </div>
+    </div>
+  </div>
+  <div class="row default-margin-top">
+    <div class="col">
+      <div class="form-group">
+        <label>Course Boost Text (maximum 50 Characters only) <span class="asterik">*</span></label>
+        <input type="text" class="form-control" name="boostText" [(ngModel)]="courseCategoryForm.boostText" #boostText="ngModel"
+          maxlength="50" required>
+        <div class="error-message" *ngIf="boostText.invalid && boostText.touched">Field is required</div>
+      </div>
+    </div>
+  </div>
+  <div class="row default-margin-top">
+    <div class="col">
+      <div class="form-group">
+        <label>Course Short Description (maximum 250 Characters only) <span class="asterik">*</span></label>
+        <input type="text" class="form-control" name="shortDescription" [(ngModel)]="courseCategoryForm.shortDescription"
+          #shortDescription="ngModel" maxlength="250" required />
+        <div class="error-message" *ngIf="shortDescription.invalid && shortDescription.touched">Field is required</div>
+      </div>
+    </div>
+  </div>
+  <div class="row default-margin-top">
+    <div class="col">
+      <div class="form-group">
+        <label>Course Detailed Description <span class="asterik">*</span> (This will be visible on Landing Page)</label>
+        <p-editor name="description" (onInit)="editorInit($event)" placeholder="Content" [(ngModel)]="courseCategoryForm.description"
+          #description="ngModel" required [style]="{'height':'320px'}">
+          <p-header>
+            <span class="ql-formats">
+              <select class="ql-size">
+                <option value="small">Petit</option>
+                <option selected></option>
+                <option value="large">Sous-titre</option>
+                <option value="huge">Titre</option>
+              </select>
+            </span>
+            <span class="ql-formats">
+              <button class="ql-bold" aria-label="Bold"></button>
+              <button class="ql-italic" aria-label="Italic"></button>
+              <button class="ql-underline" aria-label="Underline"></button>
+              <button class="ql-strike" aria-label="Strike"></button>
+            </span>
+            <span class="ql-formats">
+              <select title="Text Color" class="ql-color" defaultValue="rgb(0, 0, 0)">
+                <option value="rgb(0, 0, 0)" label="rgb(0, 0, 0)"></option>
+                <option value="rgb(61, 20, 102)" label="rgb(61, 20, 102)"></option>
+              </select>
+              <span class="ql-format-separator"></span>
+              <select title="Background Color" class="ql-background" defaultValue="rgb(255, 255, 255)">
+                <option value="rgb(0, 0, 0)" label="rgb(0, 0, 0)"></option>
+                <option value="rgb(61, 20, 102)" label="rgb(61, 20, 102)"></option>
+              </select>
+            </span>
+            <span class="ql-formats">
+              <button class="ql-list" value="ordered"></button>
+              <button class="ql-list" value="bullet"></button>
+              <select title="Text Alignment" class="ql-align">
+                <option selected>Gauche</option>
+                <option value="center" label="Center"></option>
+                <option value="right" label="Right"></option>
+                <option value="justify" label="Justify"></option>
+              </select>
+            </span>
+            <span class="ql-formats">
+              <button aria-label="Link" class="ql-link"></button>
+              <button aria-label="Image" class="ql-image"></button>
+              <button aria-label="Video" class="ql-video"></button>
+            </span>
+          </p-header>
+        </p-editor>
+        <div class="error-message" *ngIf="description.invalid && description.touched">Field is required</div>
+      </div>
+    </div>
+  </div>
+  <div class="row default-margin-top">
+    <div class="col">
+      <div class="form-group">
+        <label>Course Image <span class="asterik">*</span> (Large: 1000 X 350)</label>
+        <div *ngIf="previewImageLink" class="preview-image">
+          <a (click)="previewImage(courseCategoryForm.imageLarge, 0)">Preview Image</a>
+          <span>OR</span>
+          <a (click)="previewImage('Large', 1)">Update New One</a>
+        </div>
+        <div *ngIf="!previewImageLink">
+          <input type="file" #coverFilesInput class="form-control" name="imageLarge" [(ngModel)]="imageL" #imageLarge="ngModel"
+            (change)="uploadCategoryImage($event, imageLarge)" required />
+          <!-- Upload Percent: {{percentDone}}% <br />
+            <ng-container *ngIf="uploadSuccess">
+              Upload Successful of file with size : {{size}} bytes <br>
+              The image height is : {{height}} <br>
+              The image width is : {{width}} <br>
+            </ng-container>  -->
+          <div class="error-message" *ngIf="imageLarge.invalid && imageLarge.touched">Field is required</div>
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-group">
+        <label>Course Image <span class="asterik">*</span> (Small: 250 X 200)</label>
+        <div *ngIf="previewImageLink" class="preview-image">
+          <a (click)="previewImage(courseCategoryForm.imageSmall, 0)">Preview Image</a>
+          <span>OR</span>
+          <a (click)="previewImage('Small', 1)">Update New One</a>
+        </div>
+        <div *ngIf="!previewImageLink">
+          <input type="file" class="form-control" name="imageSmall" [(ngModel)]="imageS" #imageSmall="ngModel" (change)="uploadCategoryImage($event, imageSmall)"
+            required />
+          <!--  Upload Percent: {{percentDone}}% <br />
+            <ng-container *ngIf="uploadSuccess">
+              Upload Successful of file with size : {{size}} bytes <br>
+              The image height is : {{height}} <br>
+              The image width is : {{width}} <br>
+            </ng-container>  -->
+          <div class="error-message" *ngIf="imageSmall.invalid && imageSmall.touched">Field is required</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row default-margin-top">
+    <div class="col-6">
+      <div class="form-group">
+        <label>Video URL (Promotional Video if any)</label>
+        <input type="url" class="form-control" name="video" [(ngModel)]="courseCategoryForm.video" #video="ngModel" />
+        <div class="error-message" *ngIf="video.invalid && video.touched">Field is required</div>
+      </div>
+    </div>
+  </div>
+  <div class="row default-margin-top">
+    <div class="col">
+      <button type="submit" class="btn btn-success pull-right" [disabled]="courseDetails.invalid">Click to Save &
+        Continue
+        TimeLine
+      </button>
+    </div>
+  </div>
+  <!-- Course Image Dialog box -->
+  <p-dialog header="Image" [(visible)]="display" [modal]="true" [responsive]="true" [width]="1000" [baseZIndex]="10000"
+    [positionTop]="50" [resizable]="true">
+    <div class="text-center" *ngIf="displayTheImageInDialogBox">
+      <img style="width: 250px; height: 200px;" [src]="imagePath + displayTheImageInDialogBox" alt="banner-image">
+    </div>
+    <div *ngIf="uploadImageLargeField">
+      <label>Course Image <span class="asterik">*</span> (Small: 1000 X 350)</label>
+      <input type="file" class="form-control" name="imageLarge" [(ngModel)]="imageL" #imageLarge="ngModel" (change)="uploadCategoryImage($event, imageLarge)" />
+      <div class="error-message" *ngIf="imageLarge.invalid && imageLarge.touched">Field is required</div>
+    </div>
+    <div *ngIf="uploadImageSmallField">
+      <label>Course Image <span class="asterik">*</span> (Small: 250 X 200)</label>
+      <input type="file" class="form-control" name="imageSmall" [(ngModel)]="imageS" #imageSmall="ngModel" (change)="uploadCategoryImage($event, imageSmall)" />
+      <div class="error-message" *ngIf="imageSmall.invalid && imageSmall.touched">Field is required</div>
+    </div>
+    <p-footer>
+      <button class="btn btn-success" type="button" (click)="display=false">OK</button>
+    </p-footer>
+  </p-dialog>
+</form>

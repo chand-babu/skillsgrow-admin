@@ -1,0 +1,13 @@
+<div class="container">
+  <div class="row default-margin-top">
+    <div class="col">
+      <p-steps [model]="items" [(activeIndex)]="activeIndex" [readonly]="false"></p-steps>
+      <p-growl [value]="msgs"></p-growl>
+    </div>
+  </div>
+  <div class="row default-margin-top">
+    <div class="col">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

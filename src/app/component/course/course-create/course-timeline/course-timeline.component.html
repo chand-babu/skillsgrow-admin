@@ -1,0 +1,84 @@
+<div class="container">
+  <form class="row default-margin-top" autocomplete="off" #timelineForm="ngForm" (ngSubmit)="onSubmit();timelineForm.reset()">
+    <div class="col-md-9 text-right">
+      <div class="form-group">
+          <input type="text" class="form-control" placeholder="New Chapter Title"
+          name="title" [(ngModel)]="textvalue[timelineArrayOfData.length].title" #timelineTitle="ngModel" required>
+          <div class="text-left error-message" *ngIf="timelineTitle.invalid && timelineTitle.touched">Field is empty</div>         
+      </div>
+    </div>
+    <div class="col-md-3 text-right">
+      <button type="submit" class="btn btn-block btn-primary common-input-height"
+      [disabled]="timelineForm.invalid"><i class="fa fa-plus"></i> New Chapter</button>
+    </div>
+  </form>
+  <div class="row">
+      <div class="col-md-12 default-margin-top text-right">
+          <button type="submit" (click)="continue()" class="btn btn-primary common-input-height"
+          *ngIf="showSaveAndContinueBtn">Save and continue</button>
+      </div>
+  </div>
+  <div class="row default-margin-top" *ngFor="let data of chapterDetails; let i = index">
+    <div class="col" *ngIf="chapterDetails[0].title != ''">
+      <p-panel>
+        <p-header>
+          <div class="row">
+            <div class="col text-left">
+              {{data.title}}
+            </div>
+            <div class="col text-right">
+              <div class="btn-group" role="group">
+                <button type="button" class="btn btn-secondary disabled"><i class="fa fa-arrow-down"></i></button>
+                <button type="button" class="btn btn-secondary disabled"><i class="fa fa-arrow-up"></i></button>
+                <button (click)="chapterDelete(i)" type="button" class="btn btn-secondary"><i class="fa fa-close"></i></button>
+              </div>
+            </div>
+          </div>
+        </p-header>
+          <form class="row default-margin-top" autocomplete="off" 
+          #newTopic="ngForm" (ngSubmit)="addNewTopic(i);newTopic.reset()">
+            <div class="col-md-9 text-right">
+              <div class="form-group">
+                  <input type="text" class="form-control" placeholder="New Topic Title" 
+                  name="topic" [(ngModel)]="subTopics[i]" #topicTitle="ngModel" required>
+                  <div class="text-left error-message" *ngIf="topicTitle.invalid && topicTitle.touched">Field required</div>         
+              </div>
+              <div class="form-group">
+                  <input type="number" class="form-control" placeholder="Timing in minutes"
+                  name="topictiming" [(ngModel)]="timing[i]" #topicTiming="ngModel" required>
+                  <div class="text-left error-message" *ngIf="topicTiminginvalid && topicTiming.touched">Field required</div>         
+              </div>
+            </div>
+            <div class="col-md-3 text-right">
+              <button type="submit" class="btn btn-block btn-primary common-input-height"
+              [disabled]="newTopic.invalid"><i class="fa fa-plus"></i> New Topic</button>
+            </div>
+          </form>
+          <div class="row default-margin-top">
+            <div *ngIf="data.topics.length > 0" class="col table-responsive">
+              <table class="table table-striped table-bordered table-sm">
+                <thead class="thead-dark">
+                  <tr>
+                    <th>Order</th>
+                    <th>Topic Title</th>
+                    <th>Timing</th>
+                    <th>Delete</th>
+                    <!-- <th>Delete</th> -->
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let x of data.topics; let j = index">
+                    <td>{{j + 1}}</td>
+                    <td>{{x.subTopics}}</td>
+                    <td>{{x.timing}}</td>
+                    <td><button class="btn btn-danger" (click)="deleteTopics(i,j)">Delete</button></td>
+                    <!-- <td><i class="fa fa-close"></i></td> -->
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+      </p-panel>
+    </div>
+  </div>
+</div>

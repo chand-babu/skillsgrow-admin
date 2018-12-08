@@ -1,0 +1,15 @@
+.options-btn {
+    margin-top: 30px;
+    padding: 6px 12px;
+    background: #dc3545;
+    color: white;
+    text-align: center;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.passage-question-design {
+    background: #f1f1f1;
+    padding: 15px;
+    margin-bottom: 15px;
+}

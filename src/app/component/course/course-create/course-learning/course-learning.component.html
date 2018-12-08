@@ -1,0 +1,78 @@
+<div class="container">
+  <div class="row default-margin-top">
+    <div class="col table-responsive">
+      <button type="button" class="btn btn-primary pull-right" (click)="saveAndContinue()">Save & Continue</button>
+    </div>
+  </div>
+  <div class="row default-margin-top">
+    <div class="col table-responsive">
+      <p-accordion>
+        <p-accordionTab *ngFor="let x of sample; let i = index" header="{{x.title}}">
+          <table class="table table-striped table-bordered table-sm">
+            <thead class="thead-dark">
+              <tr>
+                <th>Topic Title</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let y of x.topics; let j = index">
+                <td>{{y.subTopics}}</td>
+                <td style="cursor: pointer;"><a (click)="textEditor(i,j)"><u>Click to Add Learning Material</u></a></td>
+              </tr>
+            </tbody>
+          </table>
+        </p-accordionTab>
+        <p-sidebar [(visible)]="display" [fullScreen]="true" [baseZIndex]="10000" [style]="{'overflow': 'auto'}">
+          <div class="container" [style]="{'overflow': 'visible'}">
+            <p-editor [(ngModel)]="sample[i].topics[j].description" #update="ngModel" [style]="{'min-height':'450px'}" (onInit)="editorInit($event)">
+              <p-header>
+                <span class="ql-formats">
+                  <select class="ql-size">
+                    <option value="small">Petit</option>
+                    <option selected></option>
+                    <option value="large">Sous-titre</option>
+                    <option value="huge">Titre</option>
+                  </select>
+                </span>
+                <span class="ql-formats">
+                  <button class="ql-bold" aria-label="Bold"></button>
+                  <button class="ql-italic" aria-label="Italic"></button>
+                  <button class="ql-underline" aria-label="Underline"></button>
+                  <button class="ql-strike" aria-label="Strike"></button>
+                </span>
+                <span class="ql-formats">
+                  <select title="Text Color" class="ql-color" defaultValue="rgb(0, 0, 0)">
+                    <option value="rgb(0, 0, 0)" label="rgb(0, 0, 0)"></option>
+                    <option value="rgb(61, 20, 102)" label="rgb(61, 20, 102)"></option>
+                  </select>
+                  <span class="ql-format-separator"></span>
+                  <select title="Background Color" class="ql-background" defaultValue="rgb(255, 255, 255)">
+                    <option value="rgb(0, 0, 0)" label="rgb(0, 0, 0)"></option>
+                    <option value="rgb(61, 20, 102)" label="rgb(61, 20, 102)"></option>
+                  </select>
+                </span>
+                <span class="ql-formats">
+                  <button class="ql-list" value="ordered"></button>
+                  <button class="ql-list" value="bullet"></button>
+                  <select title="Text Alignment" class="ql-align">
+                    <option selected>Gauche</option>
+                    <option value="center" label="Center"></option>
+                    <option value="right" label="Right"></option>
+                    <option value="justify" label="Justify"></option>
+                  </select>
+                </span>
+                <span class="ql-formats">
+                  <button aria-label="Link" class="ql-link"></button>
+                  <button aria-label="Image" class="ql-image"></button>
+                  <button aria-label="Video" class="ql-video"></button>
+                </span>
+              </p-header>
+            </p-editor>
+            <button type="submit" (click)="courseDetails()" class="btn btn-block btn-primary">Save & Close</button>
+          </div>
+        </p-sidebar>
+      </p-accordion>
+    </div>
+  </div>
+</div>

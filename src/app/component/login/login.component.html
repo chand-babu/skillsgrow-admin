@@ -1,0 +1,51 @@
+<app-navigation *ngIf="navigationStatus"></app-navigation>
+<div class="login-body">         
+  <div class="container">
+      <div class="row">
+          <div class="col-md-4 ch-login">
+              <div class="text-center">
+                  <img [src]="'assets/image/logo.png'" alt="logo" >
+              </div>
+              <form autocomplete="off" #loginDetails="ngForm"
+               (ngSubmit)="onSubmit()">
+                  <div class="form-group">
+                      <label>User ID (Email ID is your User ID)</label>
+                      <div><input type="text" class="form-control common-input" name="username"
+                    [(ngModel)] = "formData.emailId" #username="ngModel" required
+                    [class.border-red]="username.invalid && username.touched"
+                    [class.border-green]="username.valid"></div>
+                      <div class="error-message"
+                        *ngIf="username.invalid && username.touched">
+                        Enter the Email
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <label>Password</label>
+                      <div><input type="password" class="form-control common-input" name="password"
+                        [(ngModel)] = "formData.password" #password="ngModel" required
+                        [class.border-red]="password.invalid && password.touched"
+                        [class.border-green]="password.valid"></div>
+                        <div class="error-message"
+                        *ngIf="password.invalid && password.touched">
+                        Enter the password
+                        </div>
+                  </div>
+                  <div class="form-group login-button">
+                      <button [disabled]="loginDetails.invalid"
+                      [class.disabled]="loginDetails.invalid" 
+                      type="submit" class="btn btn-block"> Login</button>
+                  </div>
+              </form>
+          </div>
+      </div>
+  </div>
+   <div>
+    <p-confirmDialog icon="pi pi-exclamation-triangle" #cd>
+        <p-footer>
+            <button *ngIf="confirmTrue" type="button" pButton icon="fa fa-times" label="CANCEL" (click)="cd.reject()"></button>
+            <button *ngIf="alertTrue"  type="button" pButton icon="fa fa-check" label="OK" (click)="cd.accept()"></button>
+            <button *ngIf="confirmTrue" type="button" pButton icon="fa fa-check" label="OK" (click)="destroyToken();cd.accept()"></button>
+        </p-footer>
+    </p-confirmDialog>
+   </div>
+</div>
