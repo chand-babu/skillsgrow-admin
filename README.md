@@ -1,0 +1,2 @@
+# skillsgrow-admin
+administrator
