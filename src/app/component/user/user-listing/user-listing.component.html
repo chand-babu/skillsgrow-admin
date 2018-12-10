@@ -2,6 +2,11 @@
   <div class="row">
     <h3>Users List</h3>
     <p-table [columns]="cols" [value]="userSet" [paginator]="true" [rows]="50">
+        <ng-template pTemplate="colgroup" let-columns>
+            <colgroup>
+                <col *ngFor="let col of columns" [style.width]="col.width">
+            </colgroup>
+        </ng-template>
       <ng-template pTemplate="header" let-columns>
         <tr>
           <th *ngFor="let col of columns">{{col.header}}</th>
@@ -9,11 +14,25 @@
       </ng-template>
       <ng-template pTemplate="body" let-rowData let-a="rowIndex" let-columns="columns">
         <tr>
-          <td title="{{rowData[col.field]}}" tooltipPosition="top" placeholder="Top" 
-            *ngFor="let col of columns">
-            {{col.field == 'sno' ? a + 1:''}}
-            {{col.field == 'gender' ? rowData[col.field] == 0 ? 'Male':'Female':''}}
-            {{rowData[col.field]}}
+          <td style="width:200px" title="{{rowData[col.field]}}" tooltipPosition="top" placeholder="Top" 
+            *ngFor="let col of columns" [ngSwitch]="col.field">
+            <div *ngSwitchCase="'sno'">
+              {{ a + 1 }}
+            </div>
+            <div *ngSwitchCase="'userName'">
+                {{ rowData[col.field] }}
+            </div>
+            <div *ngSwitchCase="'emailId'">
+                {{ rowData[col.field] }}
+            </div>
+            <div *ngSwitchCase="'phone'">
+                {{ rowData[col.field] }}
+            </div>
+            <div *ngSwitchCase="'courseEnrolled'">
+                {{ rowData[col.field] }}
+            </div>
+            <!-- {{col.field == 'courseEnrolled' ? rowData[col.field].length:''}}
+            {{rowData[col.field]}} -->
           </td>
         </tr>
       </ng-template>
