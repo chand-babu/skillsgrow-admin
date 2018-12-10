@@ -16,14 +16,14 @@ export class UserListingComponent implements OnInit {
   ngOnInit() {
     this.getUserList();
     this.cols = [
-      { field: 'sno', header: 'Sno' },
-      { field: 'userName', header: 'UserName' },
-      { field: 'emailId', header: 'Email' },
-      { field: 'phone', header: 'Contact' },
-      { field: 'gender', header: 'Gender' },
-      { field: 'address', header: 'Address' },
+      { field: 'sno', header: 'Sno', width:'5%' },
+      { field: 'userName', header: 'UserName', width:'20%' },
+      { field: 'emailId', header: 'Email', width:'40%' },
+      { field: 'phone', header: 'Contact', width:'10%' },
+      { field: 'courseEnrolled', header: 'Courses', width:'5%' }
+      // { field: 'address', header: 'Address' },
       // { field: 'profilePic', header: 'Image' },
-      { field: 'active', header: 'Active' }
+      // { field: 'active', header: 'Active' }
     ];
     this.image = Constants.IMAGEPATH;
   }
@@ -32,7 +32,7 @@ export class UserListingComponent implements OnInit {
     this.UserListingProxy.listUserDetails().subscribe((data: any) => {
       let response = data;
       this.userSet = (response.result ) ? response.data : response.data;
-      console.log(this.userSet);
+      // console.log(this.userSet);
     });
   }
 
