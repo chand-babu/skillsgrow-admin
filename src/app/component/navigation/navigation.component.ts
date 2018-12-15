@@ -13,6 +13,12 @@ import { MessageConfirm } from '../../../common/message';
 export class NavigationComponent implements OnInit {
     items: MenuItem[];
     public userId: any;
+    public user = {
+        pwd : '',
+        newpwd : '',
+        confirmpwd : ''
+    };
+    public openChangePwdBoxStatus: boolean = false;
     constructor(public global: Global, public loginproxy: LoginProxy,
     public message: MessageConfirm) { }
 
@@ -49,6 +55,34 @@ export class NavigationComponent implements OnInit {
                 ]
             }
         ];
+    }
+
+    openChangePwdBox(){
+        this.openChangePwdBoxStatus = true;
+    }
+
+    adminChangePwd(){
+        if(this.user.newpwd !== this.user.confirmpwd) {
+            alert('Please check Confirm Password');
+        }else{
+            let data = {
+                id: this.global.getStorageDetail('userId')._id,
+                pwd: this.user.pwd,
+                newpwd: this.user.newpwd
+            };
+            console.log(data);
+            this.loginproxy.adminChangePwd(data)
+            .subscribe((success :any) => {
+                if(success.result){
+                    this.openChangePwdBoxStatus = false;
+                    alert('Your Password has been changed');
+                    console.log(success);
+                }else{
+                    alert('Old Password Not Matched');
+                    console.log(success);
+                }
+            })
+        } 
     }
 
     logout() {

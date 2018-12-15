@@ -4,17 +4,25 @@
             <div class="text-right" style="margin: 15px 0">
                 <button class="btn btn-success" (click)="viewAllBannerImages()">{{(!addedBannerImages) ? 'View All Banner Images' : 'Add Banner Images'}}</button>
             </div>
-            <form *ngIf="!addedBannerImages" autocomplete="off" #bannerImageForm="ngForm" (ngSubmit)="onSubmit();bannerImageForm.reset()">
+            <form *ngIf="!addedBannerImages" autocomplete="off" #bannerImageForm="ngForm" 
+            (ngSubmit)="onSubmit();bannerImageForm.reset()">
                 <div class="form-group">
                     <label>Upload Image (Image size 1500*350)</label>
-                    <input type="file" class="form-control" name="uploadImage" [(ngModel)]="bannerImageFormData.image" #image="ngModel" (change)="uploadCategoryImage($event, image)"
+                    <input type="file" class="form-control" name="uploadImage" 
+                    [(ngModel)]="bannerImageFormData.image" #image="ngModel" 
+                    (change)="uploadCategoryImage($event, image)"
                         required>
                         Upload Percent: {{percentDone}}%
-                    <div class="error-message" *ngIf="image.invalid && image.touched">Please Upload the image</div>
+                    <div class="error-message" *ngIf="image.invalid && image.touched"
+                    >Please Upload the image</div>
+                    <div *ngIf="bannerImageFormData.image">
+                        <img style="width: 150px;height: 100px;" [src]="imagePath + bannerImageFormData.image" alt="banner-image">
+                    </div>
                 </div>
                 <div class="form-group">
                     <label>Image Title</label>
-                    <input type="text" class="form-control" name="imageTitle" [(ngModel)]="bannerImageFormData.imageTitle" #imageTitle="ngModel">
+                    <input type="text" class="form-control" name="imageTitle" 
+                    [(ngModel)]="bannerImageFormData.imageTitle" #imageTitle="ngModel">
                 </div>
                 <div class="form-group">
                     <label>Image Description (maximum 50 Characters only)</label>
@@ -24,10 +32,13 @@
                 </div>
                 <div class="form-group">
                     <label>Link on Image</label>
-                    <input type="text" class="form-control" name="link" [(ngModel)]="bannerImageFormData.link">
+                    <input type="text" class="form-control" name="link" 
+                    [(ngModel)]="bannerImageFormData.link">
                 </div>
                 <div class="form-group">
-                    <button type="submit" class="btn btn-block btn-success" [disabled]="bannerImageForm.invalid">Submit</button>
+                    <button type="submit" class="btn btn-block btn-success" 
+                    [disabled]="bannerImageForm.invalid && (bannerImageFormData.image == '')"
+                    >{{ updateButton ? 'update':'submit'}}</button>
                 </div>
             </form>
         </div>
@@ -40,6 +51,7 @@
                     <th>Image</th>
                     <th>Created on</th>
                     <th>Status</th>
+                    <th>Action</th>
                 </thead>
                 <tbody>
                     <tr *ngFor="let x of addedBannerImageData;let i = index">
@@ -55,6 +67,14 @@
                               }"
                              (click)="activeAndInactiveBannerImages(x._id, x.status)">{{(x.status == 0) ? 'Active' : 'Inactive'}}</button>
                         </td>
+                        <td>
+                            <div class="d-inline mr-3" title="Edit">
+                                <button class="btn p-2 border text-light rounded bg-primary" (click)="editImageBanner(x._id)"><i class="fa fa-edit"></i></button>
+                            </div>
+                            <div class="d-inline" (click)="openConfirmation(x._id)" title="Delete">
+                                <button class="p-2 border rounded text-light bg-dark"><i class="fa fa-trash"></i></button>
+                            </div>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -66,6 +86,15 @@
                 <p-footer>
                     <button class="btn btn-success" type="button" (click)="display=false">OK</button>
                 </p-footer>
+            </p-dialog>
+            <p-dialog header="Delete Confirmation" [(visible)]="statusConfirmBox" [modal]="true" [responsive]="true" [width]="350" [minWidth]="200" [minY]="70" 
+            [baseZIndex]="10000">
+                <input id="" type="hidden" value="{{bannerId}}">
+                <span>Are you sure..?</span>
+                    <p-footer>
+                        <button type="button" pButton icon="pi pi-check" (click)="deleteImageBanner()" label="Yes"></button>
+                        <button type="button" pButton icon="pi pi-close" (click)="statusConfirmBox=false" label="No" class="ui-button-secondary"></button>
+                    </p-footer>
             </p-dialog>
         </div>
     </div>

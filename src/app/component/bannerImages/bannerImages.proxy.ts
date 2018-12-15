@@ -25,9 +25,20 @@ export class BannerImagesProxy {
         return this.http.doGet(Constants.APIPATH + 'admin/list-banner-images');
     }
 
+    deleteBannerImagesLists(id) {
+        return this.http.doDelete(Constants.APIPATH + 'admin/banner-images/' + id);
+    }
+
+    getBannerImagesDetails(id) {
+        return this.http.doGet(Constants.APIPATH + 'admin/banner-images/' + id);
+    }
+
     activeAndInactive(data) {
-        console.log(data);
         return this.http.doPut(Constants.APIPATH + 'admin/update-bannerImages', data, false);
+    }
+
+    updateBannerImage(data) {
+        return this.http.doPut(Constants.APIPATH + 'admin/update-images', data, false);
     }
 
 }
