@@ -18,9 +18,9 @@ export class UserListingComponent implements OnInit {
     this.cols = [
       { field: 'sno', header: 'Sno', width:'5%' },
       { field: 'userName', header: 'UserName', width:'20%' },
-      { field: 'emailId', header: 'Email', width:'40%' },
+      { field: 'emailId', header: 'Email', width:'35%' },
       { field: 'phone', header: 'Contact', width:'10%' },
-      { field: 'courseEnrolled', header: 'Courses', width:'5%' }
+      { field: 'courseEnrolled', header: 'Courses', width:'25%' }
       // { field: 'address', header: 'Address' },
       // { field: 'profilePic', header: 'Image' },
       // { field: 'active', header: 'Active' }

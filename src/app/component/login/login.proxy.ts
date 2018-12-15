@@ -16,6 +16,10 @@ export class LoginProxy {
         return this.http.doPost(Constants.APIPATH + 'admin/login', data);
     }
 
+    adminChangePwd(data) {
+        return this.http.doPost(Constants.APIPATH + Constants.ADMIN_CHANGE_PWD, data);
+    }
+
     browserDetails() {
         return this.mannualHttp.get('https://api.ipify.org/?format=json')
         .map((response: Response) => response);

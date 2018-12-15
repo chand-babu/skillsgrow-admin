@@ -14,7 +14,7 @@
       </ng-template>
       <ng-template pTemplate="body" let-rowData let-a="rowIndex" let-columns="columns">
         <tr>
-          <td style="width:200px" title="{{rowData[col.field]}}" tooltipPosition="top" placeholder="Top" 
+          <td style="width:200px" tooltipPosition="top" placeholder="Top" 
             *ngFor="let col of columns" [ngSwitch]="col.field">
             <div *ngSwitchCase="'sno'">
               {{ a + 1 }}
@@ -28,8 +28,11 @@
             <div *ngSwitchCase="'phone'">
                 {{ rowData[col.field] }}
             </div>
-            <div *ngSwitchCase="'courseEnrolled'">
-                {{ rowData[col.field] }}
+            <div *ngSwitchCase="'courseEnrolled'" class="text-center">
+              {{ rowData[col.field].length == 0 ? '-':''}}
+              <select *ngIf="rowData[col.field].length > 0" name="" id="" style="width: 100%;">
+                <option *ngFor="let subcol of rowData[col.field]">{{subcol.courseName}}</option>
+              </select>
             </div>
             <!-- {{col.field == 'courseEnrolled' ? rowData[col.field].length:''}}
             {{rowData[col.field]}} -->

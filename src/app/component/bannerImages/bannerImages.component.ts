@@ -11,6 +11,7 @@ import { Constants } from '../../../common/constant';
 export class BannerImagesComponent implements OnInit {
     public imagePath = Constants.IMAGEPATH;
     bannerImageFormData = {
+        id:'',
         image: '',
         imageTitle: '',
         description: '',
@@ -23,7 +24,11 @@ export class BannerImagesComponent implements OnInit {
     public addedBannerImageData: any;
     public addedBannerImages: boolean = false;
     display: boolean = false;
+    public statusConfirmBox: boolean = false;
+    public bannerId: any;
     displayTheImageInDialogBox: any;
+
+    public updateButton: boolean= false;
 
     // images variables
     public percentDone: number;
@@ -67,12 +72,24 @@ export class BannerImagesComponent implements OnInit {
     }
 
     onSubmit() {
-        this.bannerImageFormData.image = this.uploadImageresponse;
-        this.bannerimagesproxy.bannerImages(this.bannerImageFormData)
+        console.log(this.updateButton);
+        if(this.updateButton){
+            // console.log(this.bannerImageFormData);
+            this.bannerimagesproxy.updateBannerImage(this.bannerImageFormData)
             .subscribe((success) => {
                 console.log(success);
                 this.listTheBannerImages();
             });
+        }else{
+            this.bannerImageFormData.image = this.uploadImageresponse;
+            // console.log(this.bannerImageFormData);
+            
+            this.bannerimagesproxy.bannerImages(this.bannerImageFormData)
+                .subscribe((success) => {
+                    console.log(success);
+                    this.listTheBannerImages();
+                });   
+        }
     }
 
     listTheBannerImages() {
@@ -103,9 +120,49 @@ export class BannerImagesComponent implements OnInit {
     viewAllBannerImages() {
         if (this.addedBannerImages) {
             this.addedBannerImages = false;
+            this.updateButton = false;
+            this.bannerImageFormData = {
+                id:'',
+                image: '',
+                imageTitle: '',
+                description: '',
+                link: '',
+                status: 0
+            };
         } else {
+            this.updateButton = true;
             this.addedBannerImages = true;
         }
+    }
+
+    deleteImageBanner() {
+        this.statusConfirmBox = false;
+        this.bannerimagesproxy.deleteBannerImagesLists(this.bannerId)
+            .subscribe((success) => {
+                this.listTheBannerImages();
+            });
+    }
+
+    editImageBanner(id) {
+        this.bannerimagesproxy.getBannerImagesDetails(id)
+            .subscribe((success: any) => {
+                let data = success.data[0];
+                if(success.result) {
+                    this.updateButton = true;
+                    this.addedBannerImages = false;
+                    this.bannerImageFormData.id = data._id;
+                    this.bannerImageFormData.imageTitle = data.imageTitle;
+                    this.bannerImageFormData.description = data.description;
+                    this.bannerImageFormData.link = data.link;
+                    this.bannerImageFormData.image = data.image;
+                }  
+                
+            });
+    }
+
+    openConfirmation(id){
+        this.statusConfirmBox = true;
+        this.bannerId = id;
     }
 
     showDialog(image) {

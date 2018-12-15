@@ -2,6 +2,8 @@
   <a class="navbar-brand">
     <span class="font-weight-bold font-monospace text-light">SKILLSGROW ADMIN PANEL</span></a>
     <form class="form-inline my-2 my-lg-0">
+      <button class="btn btn-light mr-2 my-2 my-sm-0" type="button"
+      (click)="openChangePwdBox()">Change Password</button>
       <button class="btn btn-light my-2 my-sm-0" type="button"
       (click)="logout()">Logout</button>
     </form>
@@ -10,5 +12,29 @@
   <p-menubar [model]="items"></p-menubar>
 </div>
 <div>
+  <p-dialog header="Change Passwowd" [(visible)]="openChangePwdBoxStatus" [modal]="true" 
+  [responsive]="true" [width]="400" [minWidth]="300" [minY]="90" [baseZIndex]="10000">
+      <form autocomplete="off" #changePwdForm="ngForm" (ngSubmit)="adminChangePwd();changePwdForm.reset();">
+        <div>
+          <label for="">Old Password</label>
+          <input class="form-control" type="password" name="pwd" [(ngModel)]="user.pwd"
+          required/>
+        </div>
+        <div>
+          <label for="">New Password</label>
+          <input class="form-control" type="password" name="newpwd" [(ngModel)]="user.newpwd"
+          required/>
+        </div>
+        <div>
+          <label for="">Confirm Password</label>
+          <input class="form-control" type="password" name="confirmpwd" [(ngModel)]="user.confirmpwd"
+          required/>
+        </div>
+        <div class="mt-2 text-right">
+          <button [disabled]="changePwdForm.invalid" type="submit" 
+          class="btn btn-md btn-success">Submit</button>
+        </div>
+      </form>
+  </p-dialog>
   <p-confirmDialog></p-confirmDialog>
 </div>
