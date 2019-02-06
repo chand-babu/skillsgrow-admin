@@ -19,6 +19,10 @@ export class CourseListProxy {
         return this.http.doPut(Constants.APIPATH + 'admin/course-status', data, false);
     }
 
+    trendingCourseView(data) {
+        return this.http.doPut(Constants.APIPATH + 'admin/view-trending-course', data, false);
+    }
+
     courseDelete(id) {
         return this.http.doDelete(Constants.APIPATH + 'admin/course-delete/' + id, false);
     }

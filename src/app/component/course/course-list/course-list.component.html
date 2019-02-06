@@ -5,9 +5,13 @@
         <thead>
           <th>S.no</th>
           <th>Course Name</th>
-          <th>Actions</th>
-          <th>Add FAQ</th>
-          <th>Status</th>
+          <th *ngIf="global.checkRollsAndPermission(129) && 
+          (global.checkRollsAndPermission(114) || global.checkRollsAndPermission(115))">
+            Actions
+          </th>
+          <th *ngIf="global.checkRollsAndPermission(128)">Add FAQ</th>
+          <th *ngIf="global.checkRollsAndPermission(130)">Status</th>
+          <th *ngIf="global.checkRollsAndPermission(130)">Trending Course</th>
         </thead>
         <tbody *ngFor="let x of courseListData">
           <tr class="text-center">
@@ -16,12 +20,26 @@
           <tr *ngFor="let y of x.course; let i = index">
             <td>{{i+1}}</td>
             <td>{{y.courseName}}</td>
-            <td style="cursor: pointer"><i class="fa fa-pencil mr-2" (click)="courseEdit(y)"></i>
-              <i class="fa fa-times" (click)="deleteCourse(y._id)"></i></td>
-            <td><button (click)="addCourseFaq(y._id, y)" class="btn btn-success">ADD FAQ</button></td>
-            <td><button 
-              [class]="(y.active == true) ? 'btn btn-success' : 'btn btn-danger'" 
-              (click)="changeCourseStatus(y._id, y.active)">{{(y.active == true) ? 'Active' : 'Inactive'}}</button></td>
+            <td *ngIf="global.checkRollsAndPermission(129) && 
+            (global.checkRollsAndPermission(114) || global.checkRollsAndPermission(115))" 
+            style="cursor: pointer">
+              <i *ngIf="global.checkRollsAndPermission(114)"
+              class="fa fa-pencil mr-2" (click)="courseEdit(y)"></i>
+              <i *ngIf="global.checkRollsAndPermission(115)" 
+              class="fa fa-times" (click)="deleteCourse(y._id)"></i></td>
+            <td *ngIf="global.checkRollsAndPermission(128)">
+              <button (click)="addCourseFaq(y._id, y)" class="btn btn-success">ADD FAQ</button>
+            </td>
+            <td *ngIf="global.checkRollsAndPermission(130)">
+              <button [class]="(y.active == true) ? 'btn btn-success' : 'btn btn-danger'" 
+              (click)="changeCourseStatus(y._id, y.active)"
+              >{{(y.active == true) ? 'Active' : 'Inactive'}}
+              </button>
+            </td>
+            <td class="text-center">
+              <button class="btn btn-{{y.viewTrending ? 'success':'danger'}}" 
+              (click)="viewTrendingCourse(y._id,y.viewTrending)">{{y.viewTrending ? 'View':'Hide'}}</button>
+            </td>
           </tr>
         </tbody>
       </table>

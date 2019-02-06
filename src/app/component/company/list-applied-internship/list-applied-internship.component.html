@@ -1,0 +1,57 @@
+<div class="container-fluid">
+  <div class="row default-margin-top">
+  <div class="col">
+    <p-panel>
+      <p-header>
+        List of Applied Post
+      </p-header>
+      <p-dataTable class="text-center" #apllied scrollable="true" scrollWidth="800" [value]="appliedSet" [editable]="true" [paginator]="true"
+        exportFilename="appliedSet" [rowsPerPageOptions]="[5,10,20, 50, 100, 500, 1000]"
+        [responsive]="true" [rows]="10" sortField="createdOn" [sortOrder]="0"
+        [resizableColumns]="true">
+        <p-column field="sno" header="Sno"  [style]="{'width':'2%'}">
+          <ng-template let-col let-data="rowData" let-ri="rowIndex" pTemplate="body">
+            <span>{{ ri + 1 }}</span>
+          </ng-template>
+        </p-column>
+        <p-column field="categoryId" filter="true" sortable="true" header="Category" [style]="{'width':'10%'}">
+          <ng-template let-col let-data="rowData" let-ri="rowIndex" pTemplate="body">
+            <span>{{data[col.field].categoryName}}</span>
+          </ng-template>
+        </p-column>
+        <p-column field="internshipId" filter="true" sortable="true" header="Post For" [style]="{'width':'8%'}">
+          <ng-template let-col let-data="rowData" let-ri="rowIndex" pTemplate="body">
+            <span>{{ data[col.field].jobRole }}</span>
+          </ng-template>
+        </p-column>
+        <p-column field="userId" filter="true" sortable="true" header="Candidate" [style]="{'width':'8%'}">
+          <ng-template let-col let-data="rowData" let-ri="rowIndex" pTemplate="body">
+            <span>{{ data[col.field].userName }}</span>
+          </ng-template>
+        </p-column>
+        <p-column field="resume" filter="true" sortable="true" header="Resume" [style]="{'width':'6%'}">
+          <ng-template let-col let-data="rowData" let-ri="rowIndex" pTemplate="body">
+            <span>{{ data[col.field] }}</span>
+          </ng-template>
+        </p-column>
+        <p-column field="createdOn" filter="true" sortable="true" header="Created" [style]="{'width':'7%'}">
+          <ng-template let-col let-data="rowData" let-ri="rowIndex" pTemplate="body">
+            <span>{{ data[col.field] | date }}</span>
+          </ng-template>
+        </p-column>
+        <p-column field="status" filter="true" [editable]="true" sortable="true" header="Status" [style]="{'width':'6%'}">
+          <ng-template let-col let-data="rowData" let-ri="rowIndex" pTemplate="body">
+            <span>{{ (data[col.field]) ? 'InActive' : 'Active' }}</span>
+          </ng-template>
+          <ng-template let-col let-data="rowData" let-ri="rowIndex" pTemplate="editor">
+            <p-dropdown [(ngModel)]="data[col.field]" [options]="dropDownEditatbleStatusOption" 
+            (onChange)="postActiveAndInactive(data)"
+              [autoWidth]="false" appendTo="body" [style]="{'width':'100%'}" required="true">
+            </p-dropdown>
+          </ng-template>
+        </p-column>
+      </p-dataTable>
+    </p-panel>
+  </div>
+  </div>
+</div>

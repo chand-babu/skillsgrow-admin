@@ -5,7 +5,10 @@ import { LoginComponent, DashboardComponent,
   CourseCreateComponent, CourseExamComponent, CourseListComponent,
   CourseDetailsComponent, CourseTimelineComponent, CourseLearningComponent,
   CourseTestComponent, CourseConfirmationComponent, BannerImagesComponent, CourseFaqComponent,
-  AddSSPComponent, UserComponent, UserDashboardComponent, UserListingComponent} from './../component/all';
+  AddSSPComponent, UserComponent, UserDashboardComponent, UserListingComponent,
+  RollsPermissionsComponent, SubAdminComponent, CompanyComponent,
+  CompanyDashboardComponent, CompanyListComponent, ListInternshipComponent,
+  ListAppliedInternshipComponent } from './../component/all';
 import { LoginGuard } from '../component/guard/login.guard';
 import { StepsGuard } from '../component/guard/steps.guard';
 
@@ -37,19 +40,23 @@ const routes: Routes = [
     component: UserComponent,
     canActivate: [LoginGuard],
     children: [
-      {
-        path: '',
-        redirectTo: 'user/dashboard',
-        pathMatch: 'full'
-      },
-      {
-        path: 'dashboard',
-        component: UserDashboardComponent,
-      },
-      {
-        path: 'list',
-        component: UserListingComponent
-      }
+      { path: '', redirectTo: 'user/dashboard', pathMatch: 'full' },
+      { path: 'dashboard', component: UserDashboardComponent },
+      { path: 'list', component: UserListingComponent },
+      { path: 'rolls-permissions', component: RollsPermissionsComponent },
+      { path: 'sub-admin', component: SubAdminComponent }
+    ]
+  },
+  {
+    path: 'company',
+    component: CompanyComponent,
+    canActivate: [LoginGuard],
+    children: [
+      { path: '', redirectTo: 'company/dashboard', pathMatch: 'full' },
+      { path: 'dashboard', component: CompanyDashboardComponent },
+      { path: 'list', component: CompanyListComponent },
+      { path: ':id', component: ListInternshipComponent },
+      { path: 'internship-applied/:companyId/:id', component: ListAppliedInternshipComponent }
     ]
   },
   /* If URL does not match any path redirec to login Page */

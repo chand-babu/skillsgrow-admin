@@ -33,12 +33,23 @@ export class AddSSPComponent implements OnInit {
 
     ngOnInit() {
         this.getSSPMembers();
+        this.rollsPermissions();
     }
 
     viewSSPMembers() {
         // this.getSSPMembers();
         this.successMessage = false;
-        (this.showSSPMembers) ? this.showSSPMembers = false : this.showSSPMembers = true;
+        this.rollsPermissions();
+    }
+
+    rollsPermissions(){
+        if(this.global.checkRollsAndPermission(131) && this.global.checkRollsAndPermission(133)) {
+            (this.showSSPMembers) ? this.showSSPMembers = false : this.showSSPMembers = true;
+        }else if(this.global.checkRollsAndPermission(131)){
+            this.showSSPMembers = false;
+        }else if(this.global.checkRollsAndPermission(133)){
+            this.showSSPMembers = true;
+        } 
     }
 
     getSSPMembers() {

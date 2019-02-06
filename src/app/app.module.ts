@@ -17,6 +17,8 @@ import { GrowlModule } from 'primeng/growl';
 import { EditorModule } from 'primeng/editor';
 import { AccordionModule } from 'primeng/accordion';
 import { SidebarModule } from 'primeng/sidebar';
+import { FieldsetModule } from 'primeng/fieldset';
+import { CheckboxModule } from 'primeng/checkbox';
 import { StoreModule } from '@ngrx/store';
 import { LocalStorageModule } from 'angular-2-local-storage';
 import { DeviceDetectorModule } from 'ngx-device-detector';
@@ -27,7 +29,10 @@ import { AppRoutingModule } from './routing/app-routing.module';
 import { LoginComponent, DashboardComponent, CourseCategoriesComponent,
   CourseDashboardComponent, CourseListComponent, CourseCreateComponent,
   CourseExamComponent, NavigationComponent, BannerImagesComponent, CourseFaqComponent,
-AddSSPComponent, UserComponent, UserListingComponent, UserDashboardComponent} from './component/all';
+  AddSSPComponent, UserComponent, UserListingComponent, UserDashboardComponent,
+  RollsPermissionsComponent, SubAdminComponent, CompanyComponent,
+  CompanyDashboardComponent, CompanyListComponent, ListInternshipComponent,
+  ListAppliedInternshipComponent } from './component/all';
 import { CourseDetailsComponent } from './component/course/course-create/course-details/course-details.component';
 import { CourseTimelineComponent } from './component/course/course-create/course-timeline/course-timeline.component';
 import { CourseLearningComponent } from './component/course/course-create/course-learning/course-learning.component';
@@ -65,7 +70,14 @@ import { TooltipModule } from 'primeng/tooltip';
     AddSSPComponent,
     UserComponent,
     UserListingComponent,
-    UserDashboardComponent
+    UserDashboardComponent,
+    RollsPermissionsComponent,
+    SubAdminComponent,
+    CompanyComponent,
+    CompanyDashboardComponent,
+    CompanyListComponent,
+    ListInternshipComponent,
+    ListAppliedInternshipComponent
   ],
   imports: [
     BrowserModule, FormsModule,
@@ -80,7 +92,8 @@ import { TooltipModule } from 'primeng/tooltip';
     DeviceDetectorModule.forRoot(),
     MenubarModule, CardModule, ChartModule, PanelModule, DataTableModule, DialogModule,
     DropdownModule, StepsModule, EditorModule, AccordionModule, SidebarModule,
-    ConfirmDialogModule, TableModule, GrowlModule, NgHttpLoaderModule, TooltipModule
+    ConfirmDialogModule, TableModule, GrowlModule, NgHttpLoaderModule, TooltipModule,
+    FieldsetModule, CheckboxModule
   ],
   providers: [
     Global,

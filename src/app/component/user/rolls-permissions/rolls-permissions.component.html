@@ -1,0 +1,100 @@
+<div class="container">
+  <div class="row default-margin-top">
+    <div class="col-lg-12 col-xl-12 mb-2">
+      <div class="text-right">
+        <button type="button" class="btn btn-md btn-primary"
+        (click)="changeButtonText()">{{ !tableShow ? 'List Rolls Permissions':'Add Rolls Permissions'}}
+        </button>
+      </div>
+    </div>
+    <div class="col" *ngIf="!tableShow">
+      <p-panel header="{{update ? 'Update':'Create'}} Rolls and Permissions For">
+        <form #permissionForm="ngForm" autocomplete="off" 
+        (ngSubmit)="onSubmit();permissionForm.reset();">
+          <div class="row mt-3 ml-2">
+            <div class="col-lg-2 col-xl-2">
+              <label for="">Permission Title </label>:
+            </div>
+            <div class="col-lg-4 col-xl-4">
+              <input type="text" class="form-control" [(ngModel)]="permissionTitle" 
+              #name="ngModel" name="name" required>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-lg-6 col-xl-6 mt-3" *ngFor="let x of rollsPermissionData">
+              <p-fieldset legend="{{x.name}}">
+                <div class="row">
+                  <div class="col-lg-6 col-xl-6" *ngFor="let y of x.items">
+                    <div class="checkbox">
+                      <label>
+                        <input type="checkbox" name="{{y.name}}" value="{{y.code}}" 
+                        (change)="onChange(y.code, $event.target.checked)" [checked]="checkArrayValue(y.code)">
+                        {{y.name}}
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </p-fieldset>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-lg-12 col-xl-12">
+              <div class="text-right">
+                <button type="submit" [disabled]="permissionForm.invalid" 
+                class="btn btn-lg btn-success">{{update ? 'Update':'Submit'}}</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </p-panel>
+    </div>
+  </div>
+  <div class="row" *ngIf="tableShow">
+    <p-panel header="Rolls Permission List">
+      <p-table [columns]="cols" [value]="rollsPermissionIterate" [paginator]="true" [rows]="50">
+        <ng-template pTemplate="colgroup" let-columns>
+          <colgroup>
+            <col *ngFor="let col of columns" [style.width]="col.width">
+          </colgroup>
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th *ngFor="let col of columns" [ngSwitch]="col.header">{{col.header}}</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-a="rowIndex" let-columns="columns">
+          <tr>
+            <td tooltipPosition="top" placeholder="Top" *ngFor="let col of columns" [ngSwitch]="col.field">
+              <div *ngSwitchCase="'sno'">
+                {{ a + 1 }}
+              </div>
+              <div *ngSwitchCase="'title'">
+                {{ rowData[col.field] }}
+              </div>
+              <div *ngSwitchCase="'status'">
+                {{ rowData[col.field] == 0 ? 'Active':'Inactive' }}
+              </div>
+              <div *ngSwitchCase="'actions'" class="text-center">
+                <div class="d-inline mr-3" title="Edit">
+                  <button class="btn p-2 border text-light rounded bg-primary" (click)="editRollsPermissions(a)"><i
+                      class="fa fa-edit"></i></button>
+                </div>
+                <div class="d-inline" (click)="openConfirmation(a)" title="Delete">
+                  <button class="p-2 border rounded text-light bg-dark"><i class="fa fa-trash"></i></button>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-panel>
+    <p-dialog header="Delete Confirmation" [(visible)]="statusConfirmBox" [modal]="true" [responsive]="true" [width]="350"
+      [minWidth]="200" [minY]="70" [baseZIndex]="10000">
+      <span>Are you sure..?</span>
+      <p-footer>
+        <button type="button" pButton icon="pi pi-check" (click)="deletePermissions()" label="Yes"></button>
+        <button type="button" pButton icon="pi pi-close" (click)="statusConfirmBox=false" label="No" class="ui-button-secondary"></button>
+      </p-footer>
+    </p-dialog>
+  </div>
+</div>

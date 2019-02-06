@@ -1,0 +1,57 @@
+<div class="container-fluid">
+  <div class="row default-margin-top">
+  <div class="col">
+    <p-panel>
+      <p-header>
+        List of Internship Post
+      </p-header>
+      <p-dataTable class="text-center" #internship scrollable="true" scrollWidth="800" [value]="internshipSet" [editable]="true" [paginator]="true"
+        exportFilename="companySet" [rowsPerPageOptions]="[5,10,20, 50, 100, 500, 1000]"
+        [responsive]="true" [rows]="10" sortField="createdOn" [sortOrder]="0"
+        [resizableColumns]="true">
+        <p-column field="sno" header="Sno"  [style]="{'width':'5%'}">
+          <ng-template let-col let-data="rowData" let-ri="rowIndex" pTemplate="body">
+            <span>{{ ri + 1 }}</span>
+          </ng-template>
+        </p-column>
+        <p-column field="jobRole" filter="true" sortable="true" header="Job Role" [style]="{'width':'10%'}">
+          <ng-template let-col let-data="rowData" let-ri="rowIndex" pTemplate="body">
+            <span><a href="/company/internship-applied/{{companyId}}/{{data._id}}">{{data[col.field]}}</a></span>
+          </ng-template>
+        </p-column>
+        <p-column field="dateOfJoining" filter="true" sortable="true" header="Joining" [style]="{'width':'8%'}">
+          <ng-template let-col let-data="rowData" let-ri="rowIndex" pTemplate="body">
+            <span>{{ data[col.field] | date }}</span>
+          </ng-template>
+        </p-column>
+        <p-column field="location" filter="true" sortable="true" header="Location" [style]="{'width':'8%'}"></p-column>
+        <p-column field="qualification" filter="true" sortable="true" header="Degree" [style]="{'width':'6%'}"></p-column>
+        <p-column field="salary" filter="true" sortable="true" header="Salary" [style]="{'width':'6%'}"></p-column>
+        <p-column field="internType" filter="true" header="Part/Full" [style]="{'width':'8%'}"></p-column>
+        <p-column field="contactPersonNo" filter="true" sortable="true" header="Contact" [style]="{'width':'8%'}">
+        </p-column>
+        <p-column field="contactPersonEmail" filter="true" [editable]="true" sortable="true" header="Email" [style]="{'width':'10%'}">
+        </p-column>
+        <p-column field="jobDescription" [editable]="true" header="Description" [style]="{'width':'10%'}">
+        </p-column>
+        <p-column field="createdOn" filter="true" sortable="true" header="Created" [style]="{'width':'7%'}">
+          <ng-template let-col let-data="rowData" let-ri="rowIndex" pTemplate="body">
+            <span>{{ data[col.field] | date }}</span>
+          </ng-template>
+        </p-column>
+        <p-column field="status" filter="true" [editable]="true" sortable="true" header="Status" [style]="{'width':'6%'}">
+          <ng-template let-col let-data="rowData" let-ri="rowIndex" pTemplate="body">
+            <span>{{ (data[col.field]) ? 'InActive' : 'Active' }}</span>
+          </ng-template>
+          <ng-template let-col let-data="rowData" let-ri="rowIndex" pTemplate="editor">
+            <p-dropdown [(ngModel)]="data[col.field]" [options]="dropDownEditatbleStatusOption" 
+            (onChange)="postActiveAndInactive(data)"
+              [autoWidth]="false" appendTo="body" [style]="{'width':'100%'}" required="true">
+            </p-dropdown>
+          </ng-template>
+        </p-column>
+      </p-dataTable>
+    </p-panel>
+  </div>
+  </div>
+</div>
