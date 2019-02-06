@@ -1,0 +1,125 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-10 col-xl-10 offset-lg-1 offset-xl-1 mt-3">
+      <h3>Sub Admin</h3>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-10 col-xl-10 text-right" style="margin: 15px 0">
+        <button class="btn btn-primary" (click)="showHide()"
+        >{{!hideShowList ? 'List':'Add'}} Sub Admin</button>
+    </div>
+    <div class="col-6 offset-3 banner-image" *ngIf="!hideShowList">  
+      <p-panel header="{{this.update ? 'Update':'Add'}} Sub Admin">
+        <form  autocomplete="off" #adminForm="ngForm" (ngSubmit)="onSubmit()">
+          <div class="form-group">
+            <label>Username *</label>
+            <input type="text" class="form-control" name="username"
+            [(ngModel)]="formObject.username" required>
+          </div>
+          <div class="form-group">
+            <label>Email ID *</label>
+            <input type="text" class="form-control" name="emailId"
+            [(ngModel)]="formObject.emailId" required>
+          </div>
+          <div class="form-group" *ngIf="!update">
+              <label>Password *</label>
+              <input type="password" class="form-control" name="password"
+              [(ngModel)]="formObject.password" required>
+            </div>
+          <div class="form-group">
+            <label>Contact *</label>
+            <input type="text" class="form-control" name="phone"
+            [(ngModel)]="formObject.phone" required>
+          </div>
+          <div class="form-group">
+            <label>Rolls Permission *</label>
+            <select class="form-control" name="rollsPermission" multiple
+            [(ngModel)]="formObject.rollsPermission" required>
+              <option [value]="x._id" *ngFor="let x of rollsSet">{{ x.title }}</option>
+            </select>
+          </div>
+          <div class="form-group" *ngIf="this.update">
+            <label>Status *</label>
+            <select class="form-control" name="status"
+            [(ngModel)]="formObject.status">
+              <option value="1" >Active</option>
+              <option value="2" >In Active</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class="col-lg-2 col-xl-2 offset-lg-10 offset-xl-10">
+                <button type="submit" [disabled]="adminForm.invalid" class="btn btn-md btn-block btn-success"
+                >{{this.update ? 'Update':'Submit'}}</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </p-panel>
+    </div>
+    <div class="col-lg-10 col-xl-10 offset-lg-1 offset-xl-1" *ngIf="hideShowList">
+      <p-panel header="Sub Admin List">
+        <p-table [columns]="cols" [value]="subAdminGet" [paginator]="true" [rows]="10">
+          <ng-template pTemplate="colgroup" let-columns>
+            <colgroup>
+              <col *ngFor="let col of columns" [style.width]="col.width">
+            </colgroup>
+          </ng-template>
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th *ngFor="let col of columns" [ngSwitch]="col.header"
+              class="text-center">{{col.header}}</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData let-a="rowIndex" let-columns="columns">
+            <tr>
+              <td tooltipPosition="top" placeholder="Top" *ngFor="let col of columns" 
+              title="{{rowData[col.field]}}" [ngSwitch]="col.field">
+                <div *ngSwitchCase="'sno'">
+                  {{ a + 1 }}
+                </div>
+                <div *ngSwitchCase="'username'">
+                  {{ rowData[col.field] }}
+                </div>
+                <div *ngSwitchCase="'emailId'">
+                  {{ rowData[col.field] }}
+                </div>
+                <div *ngSwitchCase="'phone'">
+                  {{ rowData[col.field] }}
+                </div>
+                <div *ngSwitchCase="'createdOn'">
+                  {{ rowData[col.field] | date:'medium' }}
+                </div>
+                <div *ngSwitchCase="'status'">
+                  {{ rowData[col.field] == 1 || rowData[col.field] == 0 ? 'Active':'Inactive' }}
+                </div>
+                <div *ngSwitchCase="'action'" class="text-center">
+                  <div class="d-inline mr-3" title="Edit">
+                    <button class="btn p-2 border text-light rounded bg-primary"
+                    (click)="editSubAdmin(a)">
+                      <i class="fa fa-edit"></i></button>
+                  </div>
+                  <div class="d-inline" title="Delete">
+                    <button class="p-2 border rounded text-light bg-dark"
+                    (click)="deleteConfirmation(a)">
+                      <i class="fa fa-trash"></i>
+                    </button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </p-panel>
+      <p-dialog header="Delete Confirmation" [(visible)]="deletePopStatus" [modal]="true" [responsive]="true" [width]="350"
+      [minWidth]="200" [minY]="70" [baseZIndex]="10000">
+      <span>Are you sure..?</span>
+      <p-footer>
+        <button type="button" pButton icon="pi pi-check" (click)="deleteSubAdmin()" label="Yes"></button>
+        <button type="button" pButton icon="pi pi-close" (click)="deletePopStatus=false" label="No" class="ui-button-secondary"></button>
+      </p-footer>
+    </p-dialog>
+    </div>
+  </div>
+</div>

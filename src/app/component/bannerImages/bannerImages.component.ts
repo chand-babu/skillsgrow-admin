@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { BannerImagesProxy } from './bannerImages.proxy';
 import { MessageConfirm } from '../../../common/message';
 import { Constants } from '../../../common/constant';
+import { Global } from './../../../common/global';
 
 @Component({
     selector: 'app-banner-images',
@@ -37,10 +38,37 @@ export class BannerImagesComponent implements OnInit {
     public width: number;
     public height: number;
 
-    constructor(public bannerimagesproxy: BannerImagesProxy, private message: MessageConfirm) { }
+    constructor(public global: Global,
+        public bannerimagesproxy: BannerImagesProxy, 
+        private message: MessageConfirm) { }
 
     ngOnInit() {
         this.listTheBannerImages();
+        this.rollsPermissions();
+    }
+
+    rollsPermissions(){
+        if(this.global.checkRollsAndPermission(136) && this.global.checkRollsAndPermission(137)) {
+            if (this.addedBannerImages) {
+                this.addedBannerImages = false;
+                this.updateButton = false;
+                this.bannerImageFormData = {
+                    id:'',
+                    image: '',
+                    imageTitle: '',
+                    description: '',
+                    link: '',
+                    status: 0
+                };
+            } else {
+                this.updateButton = true;
+                this.addedBannerImages = true;
+            }
+        }else if(this.global.checkRollsAndPermission(136)){
+            this.addedBannerImages = false;
+        }else if(this.global.checkRollsAndPermission(137)){
+            this.addedBannerImages = true;
+        } 
     }
 
     uploadCategoryImage(file, categoryImage) {
@@ -53,7 +81,7 @@ export class BannerImagesComponent implements OnInit {
             img.onload = () => {
                 this.width = img.width;
                 this.height = img.height;
-                if (this.width === 1500 && this.height === 350) {
+                if (this.width === 1500 && this.height === 450) {
                     const formData = new FormData();
                     formData.append('image', file.target.files[0]);
                     this.bannerimagesproxy.uploadImageCategory(formData)
@@ -63,7 +91,7 @@ export class BannerImagesComponent implements OnInit {
                         });
                 } else {
                     categoryImage.reset();
-                    this.message.alert('image ratio should be 1500*350');
+                    this.message.alert('image ratio should be 1500*450');
                 }
             };
             img.src = fr.result; // This is the data URL
@@ -118,21 +146,22 @@ export class BannerImagesComponent implements OnInit {
     }
 
     viewAllBannerImages() {
-        if (this.addedBannerImages) {
-            this.addedBannerImages = false;
-            this.updateButton = false;
-            this.bannerImageFormData = {
-                id:'',
-                image: '',
-                imageTitle: '',
-                description: '',
-                link: '',
-                status: 0
-            };
-        } else {
-            this.updateButton = true;
-            this.addedBannerImages = true;
-        }
+        this.rollsPermissions();
+        // if (this.addedBannerImages) {
+        //     this.addedBannerImages = false;
+        //     this.updateButton = false;
+        //     this.bannerImageFormData = {
+        //         id:'',
+        //         image: '',
+        //         imageTitle: '',
+        //         description: '',
+        //         link: '',
+        //         status: 0
+        //     };
+        // } else {
+        //     this.updateButton = true;
+        //     this.addedBannerImages = true;
+        // }
     }
 
     deleteImageBanner() {

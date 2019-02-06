@@ -19,6 +19,7 @@ export class LoginService {
     if (user.emailId !== '' && user.password !== '' ) {
       this.loggedIn.next(true);
       this.router.navigate(['/dashboard']);
+      window.location.reload();
     }
   }
 

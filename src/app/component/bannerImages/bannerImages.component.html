@@ -1,8 +1,9 @@
 <div class="container-fluid">
     <div class="row">
-        <div class="col-10 offset-1 banner-image">
-            <div class="text-right" style="margin: 15px 0">
-                <button class="btn btn-success" (click)="viewAllBannerImages()">{{(!addedBannerImages) ? 'View All Banner Images' : 'Add Banner Images'}}</button>
+        <div class="col-10 offset-1 mt-5 banner-image">
+            <div class="text-right" style="margin: 15px 0"
+            *ngIf="global.checkRollsAndPermission(136) && global.checkRollsAndPermission(137)">
+                <button class="btn btn-success" (click)="viewAllBannerImages()">{{(!addedBannerImages) ? 'View All' : 'Add'}} Banner Images</button>
             </div>
             <form *ngIf="!addedBannerImages" autocomplete="off" #bannerImageForm="ngForm" 
             (ngSubmit)="onSubmit();bannerImageForm.reset()">
@@ -44,14 +45,16 @@
         </div>
     </div>
     <div *ngIf="addedBannerImages" class="row">
-        <div class="col-10 offset-1 banner-images-table text-center">
+        <div class="col-10 offset-1 mt-5 banner-images-table text-center">
             <table class="table table-bordered">
                 <thead>
                     <th>S.no</th>
                     <th>Image</th>
                     <th>Created on</th>
-                    <th>Status</th>
-                    <th>Action</th>
+                    <th *ngIf="global.checkRollsAndPermission(141)">Status</th>
+                    <th *ngIf="global.checkRollsAndPermission(138) &&
+                    (global.checkRollsAndPermission(139) || 
+                    global.checkRollsAndPermission(140))">Action</th>
                 </thead>
                 <tbody>
                     <tr *ngFor="let x of addedBannerImageData;let i = index">
@@ -60,18 +63,21 @@
                             <a (click)="showDialog(x.image)">View Images</a>
                         </td>
                         <td>{{x.createdOn}}</td>
-                        <td>
+                        <td *ngIf="global.checkRollsAndPermission(141)">
                             <button class="btn" [ngClass]="{
                                 'btn-success':x.status == 0,
                                 'btn-danger':x.status == 1
                               }"
                              (click)="activeAndInactiveBannerImages(x._id, x.status)">{{(x.status == 0) ? 'Active' : 'Inactive'}}</button>
                         </td>
-                        <td>
-                            <div class="d-inline mr-3" title="Edit">
+                        <td *ngIf="global.checkRollsAndPermission(138) &&
+                        (global.checkRollsAndPermission(139) || global.checkRollsAndPermission(140))">
+                            <div class="d-inline mr-3" title="Edit"
+                            *ngIf="global.checkRollsAndPermission(139)">
                                 <button class="btn p-2 border text-light rounded bg-primary" (click)="editImageBanner(x._id)"><i class="fa fa-edit"></i></button>
                             </div>
-                            <div class="d-inline" (click)="openConfirmation(x._id)" title="Delete">
+                            <div class="d-inline" (click)="openConfirmation(x._id)" title="Delete"
+                            *ngIf="global.checkRollsAndPermission(140)">
                                 <button class="p-2 border rounded text-light bg-dark"><i class="fa fa-trash"></i></button>
                             </div>
                         </td>

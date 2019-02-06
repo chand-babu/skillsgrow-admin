@@ -68,4 +68,22 @@ export class CourseListComponent implements OnInit {
     });
   }
 
+  viewTrendingCourse(id,viewTrending){
+    let viewStatus = viewTrending == undefined || viewTrending == false ? true:false;
+    console.log(id, viewTrending, viewStatus);
+    let data = {
+      id: id, 
+      viewTrending : viewStatus
+    }
+    this.courseListProxy.trendingCourseView(data)
+      .subscribe((success: any) => {
+        if(success.status){
+          alert('Only 6 You can display');
+        }else{
+          console.log(success);
+        }
+        this.courseList();
+      });
+  }
+
 }

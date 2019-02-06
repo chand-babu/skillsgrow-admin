@@ -23,38 +23,75 @@ export class NavigationComponent implements OnInit {
     public message: MessageConfirm) { }
 
     ngOnInit() {
-        this.items = [
+        let menu = [
             {
                 label: 'Dashboard',
-                routerLink: 'dashboard'
+                routerLink: 'dashboard',
+                code: 123
             },
             {
                 label: 'Course Management',
                 routerLink: 'course',
+                code: 124,
                 items: [
-                    { label: 'Dashboard', routerLink: 'course/dashboard' },
-                    { label: 'Manage Categories', routerLink: 'course/categories' },
-                    { label: 'Course List', routerLink: 'course/list' },
-                    { label: 'Create New Course', routerLink: 'course/create' },
-                    { label: 'Add SSP', routerLink: 'course/addssp' }
+                    { label: 'Dashboard', routerLink: 'course/dashboard', code: 101 },
+                    { label: 'Manage Categories', routerLink: 'course/categories', code: 102 },
+                    { label: 'Course List', routerLink: 'course/list', code: 103 },
+                    { label: 'Create New Course', routerLink: 'course/create', code: 104 },
+                    { label: 'Add SSP', routerLink: 'course/addssp', code: 127 }
                 ]
             },
             {
                 label: 'CMS',
                 routerLink: 'cms/dashboard',
+                code: 125,
                 items: [
-                    { label: 'Manage Banners', routerLink: 'bannerimages' },
+                    { label: 'Manage Banners', routerLink: 'bannerimages', code: 105 },
                 ]
             },
             {
                 label: 'User Management',
                 routerLink: 'user/dashboard',
+                code: 126,
                 items: [
-                    { label: 'Dashboard', routerLink: 'user/dashboard' },
-                    { label: 'User Lists', routerLink: 'user/list' }
+                    { label: 'Dashboard', routerLink: 'user/dashboard', code: 106 },
+                    { label: 'User Lists', routerLink: 'user/list', code: 107 },
+                    { label: 'Rolls and permissions', routerLink: 'user/rolls-permissions', code: 108 },
+                    { label: 'Sub Admin', routerLink: 'user/sub-admin', code: 109 }
+                ]
+            },{
+                label: 'Company Intern',
+                routerLink: 'company/dashboard',
+                code: 142,
+                items: [
+                    { label: 'Dashboard', routerLink: 'company/dashboard', code: 143 },
+                    { label: 'Company Lists', routerLink: 'company/list', code: 144 }
                 ]
             }
         ];
+
+        let accessAllowed = menu.filter((permissionsItems) => {
+            if(this.global.checkRollsAndPermission(permissionsItems.code)){
+                delete permissionsItems.code;
+                if(permissionsItems.items != undefined){
+                    if(permissionsItems.items.length != 0){
+                        let per = permissionsItems.items.filter((items) => {
+                            if(this.global.checkRollsAndPermission(items.code)){
+                                delete items.code;
+                                return true;
+                            }else{
+                                return false;
+                            }
+                        });
+                        permissionsItems.items = per ;
+                    }
+                }
+                return true; 
+            }else{
+                return false;
+            }
+        });
+        this.items = accessAllowed;
     }
 
     openChangePwdBox(){

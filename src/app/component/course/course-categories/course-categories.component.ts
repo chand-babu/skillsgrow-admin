@@ -19,6 +19,7 @@ export class CourseCategoriesComponent implements OnInit {
   public categoryForm = {
     categoryName: '',
     categoryImg: '',
+    categoryType: 0,
     userId: '',
     status: ''
   };
@@ -49,6 +50,7 @@ export class CourseCategoriesComponent implements OnInit {
   public height: number;
 
   dropDownEditatbleStatusOption: any = [{ label: 'Active', value: 0 }, { label: 'InActive', value: 1 }];
+  typeEditatbleStatusOption: any = [{ label: 'Skillsgrow Courses', value: 0 }, { label: 'Internship', value: 1 }];
   constructor(public courseCategories: CourseCategoryProxy,
     public global: Global, private message: MessageConfirm) {
   }
@@ -57,9 +59,21 @@ export class CourseCategoriesComponent implements OnInit {
     this.listAddCategory();
   }
 
-  valuesUpdated(data) {
-    this.tableLoading = true;
+  valuesUpdated(value) {
+    // this.tableLoading = true;
+    let data = {
+      id  : value.data._id,
+      categoryName : value.data.categoryName,
+      categoryImg : value.data.categoryImg,
+      categoryType : value.data.categoryType,
+      status : value.data.status
+    }
     console.log(data);
+    this.courseCategories.activeAndInactive(data)
+        .subscribe((success) => {
+          console.log(success);
+          this.listAddCategory();
+        });
   }
 
   addsubAdmin() {
@@ -136,6 +150,19 @@ export class CourseCategoriesComponent implements OnInit {
       delete data._id;
       console.log(data);
       this.courseCategories.activeAndInactive(data)
+        .subscribe((success) => {
+          console.log(success);
+          this.listAddCategory();
+        });
+    }
+
+    typeActiveAndInactive(data) {
+      let dataSet = {
+        id: data._id,
+        categoryType: data.categoryType
+      }
+      console.log(dataSet);
+      this.courseCategories.typeActiveAndInactive(dataSet)
         .subscribe((success) => {
           console.log(success);
           this.listAddCategory();

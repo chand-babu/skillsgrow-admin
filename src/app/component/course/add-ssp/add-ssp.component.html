@@ -7,7 +7,8 @@
                     Partner (SSP)'}}</h4>
             </div>
 
-            <div class="mt-3 mb-3 text-right">
+            <div class="mt-3 mb-3 text-right" 
+            *ngIf="global.checkRollsAndPermission(131) && global.checkRollsAndPermission(133)">
                 <button (click)="viewSSPMembers()" class="btn btn-success">
                     <i class="fa fa-user mr-2"></i>
                     {{(!showSSPMembers) ? 'View SSP Members' : 'Add SSP Members'}}</button>
@@ -76,7 +77,7 @@
                                 <p-column field="createdOn" filter="true" sortable="true" header="Added on"></p-column>
                                 <p-column field="wallet" filter="true" sortable="true" header="Amount">
                                 </p-column>
-                                <p-column filter="true" sortable="true" header="Action">
+                                <p-column filter="true" sortable="true" header="List Members">
                                     <ng-template style="cursor: pointer" let-col let-user="rowData" let-i="rowIndex"
                                         pTemplate="body">
                                         <div *ngIf="user.discountUsers.length != 0" class="table-responsive">
@@ -88,11 +89,15 @@
                                         </div>
                                     </ng-template>
                                 </p-column>
-                                <p-column filter="true" sortable="true" header="Action">
+                                <p-column filter="true" sortable="true" 
+                                header="Action" *ngIf="global.checkRollsAndPermission(135) &&
+                                (global.checkRollsAndPermission(132) || global.checkRollsAndPermission(134))">
                                     <ng-template let-col let-user="rowData" let-i="rowIndex" pTemplate="body">
                                         <div style="cursor: pointer">
-                                            <i (click)="editSSPMembers(user, i)" class="fa fa-pencil mr-2"></i>
-                                            <i (click)="deleteSSPMembers(user._id)" class="fa fa-times"></i>
+                                            <i (click)="editSSPMembers(user, i)" class="fa fa-pencil mr-2"
+                                            *ngIf="global.checkRollsAndPermission(132)" title="Edit"></i>
+                                            <i (click)="deleteSSPMembers(user._id)" class="fa fa-times"
+                                            *ngIf="global.checkRollsAndPermission(134)" title="Delete"></i>
                                         </div>
                                     </ng-template>
                                 </p-column>

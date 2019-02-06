@@ -31,6 +31,10 @@ export class CourseCategoryProxy {
         return this.http.doPut(Constants.APIPATH + 'admin/update-category', data, false);
     }
 
+    typeActiveAndInactive(data) {
+        return this.http.doPut(Constants.APIPATH + 'admin/change-category-type', data, false);
+    }
+
     addAdmin(data) {
         console.log(data);
         return this.http.doPost(Constants.APIPATH + 'admin/add', data, false);

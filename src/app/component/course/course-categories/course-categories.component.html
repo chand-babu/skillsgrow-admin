@@ -1,6 +1,6 @@
 <div class="container">
   <p-growl [value]="msgs"></p-growl>
-  <div class="row default-margin-top">
+  <div class="row default-margin-top" *ngIf="global.checkRollsAndPermission(110)">
     <div class="col">
       <p-panel header="Create New Category">
         <form class="row" autocomplete="off" #cat="ngForm" (ngSubmit)="onSubmit();cat.reset()">
@@ -29,6 +29,19 @@
           </div>
           <div class="col">
             <div class="form-group">
+              <label>Type</label>
+              <select class="form-control" name="categoryType" #categoryType="ngModel"
+              [(ngModel)]="categoryForm.categoryType" required>
+                <option value="0">Skillsgrow Courses</option>
+                <option value="1">Internship</option>
+              </select>
+              <div class="error-message" *ngIf="categoryForm.errors?.required && categoryType.touched">
+                Field is required
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
               <label>&nbsp;</label>
               <button type="submit" [disabled]="cat.invalid" class="btn btn-success btn-block common-input-height">
                 Save Category </button>
@@ -41,7 +54,7 @@
   <div *ngIf="false">
     <button class="btn btn-success" (click)="addsubAdmin()">sub admin</button>
   </div>
-  <div class="row default-margin-top">
+  <div class="row default-margin-top" *ngIf="global.checkRollsAndPermission(112)">
     <div class="col">
       <p-panel>
         <p-header>
@@ -56,12 +69,24 @@
           <p-column field="course" filter="true" sortable="true" header="Courses">
           </p-column>
           <p-column field="createdOn" filter="true" sortable="true" header="Created"></p-column>
+          <p-column field="categoryType" filter="true" [editable]="true" sortable="true" header="Type">
+            <ng-template let-col let-data="rowData" let-ri="rowIndex" pTemplate="body">
+              <span>{{ (data[col.field] == 0 || data[col.field] == 'undefined') ? 'Skillsgrow Courses' : 'Internship' }}</span>
+            </ng-template>
+            <ng-template let-col let-data="rowData" let-ri="rowIndex" pTemplate="editor">
+              <p-dropdown [(ngModel)]="data[col.field]" [options]="typeEditatbleStatusOption" 
+              (onChange)="typeActiveAndInactive(data)"
+                [autoWidth]="false" appendTo="body" [style]="{'width':'100%'}" required="true">
+              </p-dropdown>
+            </ng-template>
+          </p-column>
           <p-column field="status" filter="true" [editable]="true" sortable="true" header="Status">
             <ng-template let-col let-data="rowData" let-ri="rowIndex" pTemplate="body">
               <span>{{ (data[col.field]) ? 'InActive' : 'Active' }}</span>
             </ng-template>
             <ng-template let-col let-data="rowData" let-ri="rowIndex" pTemplate="editor">
-              <p-dropdown [(ngModel)]="data[col.field]" [options]="dropDownEditatbleStatusOption" (onChange)="courseActiveAndInactive(data)"
+              <p-dropdown [(ngModel)]="data[col.field]" [options]="dropDownEditatbleStatusOption" 
+              (onChange)="courseActiveAndInactive(data)"
                 [autoWidth]="false" appendTo="body" [style]="{'width':'100%'}" required="true">
               </p-dropdown>
             </ng-template>
