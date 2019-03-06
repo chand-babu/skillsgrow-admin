@@ -4,6 +4,7 @@ import { Global } from './../../../common/global';
 import { LoginProxy } from '../login/login.proxy';
 import { ConfirmDialog } from 'primeng/confirmdialog';
 import { MessageConfirm } from '../../../common/message';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-navigation',
@@ -14,13 +15,13 @@ export class NavigationComponent implements OnInit {
     items: MenuItem[];
     public userId: any;
     public user = {
-        pwd : '',
-        newpwd : '',
-        confirmpwd : ''
+        pwd: '',
+        newpwd: '',
+        confirmpwd: ''
     };
     public openChangePwdBoxStatus: boolean = false;
-    constructor(public global: Global, public loginproxy: LoginProxy,
-    public message: MessageConfirm) { }
+    constructor(public route:Router,public global: Global, public loginproxy: LoginProxy,
+        public message: MessageConfirm) { }
 
     ngOnInit() {
         let menu = [
@@ -37,7 +38,13 @@ export class NavigationComponent implements OnInit {
                     { label: 'Dashboard', routerLink: 'course/dashboard', code: 101 },
                     { label: 'Manage Categories', routerLink: 'course/categories', code: 102 },
                     { label: 'Course List', routerLink: 'course/list', code: 103 },
-                    { label: 'Create New Course', routerLink: 'course/create', code: 104 },
+                    {
+                        label: 'Create New Course', routerLink: 'course/create', code: 104, command: (event: any) => {
+                            this.global.removeBulkData('courseData');
+                            this.route.navigateByUrl('/', { skipLocationChange: true }).then(() =>
+                                this.route.navigate(["/course/create"])); 
+                        }
+                    },
                     { label: 'Add SSP', routerLink: 'course/addssp', code: 127 }
                 ]
             },
@@ -59,7 +66,7 @@ export class NavigationComponent implements OnInit {
                     { label: 'Rolls and permissions', routerLink: 'user/rolls-permissions', code: 108 },
                     { label: 'Sub Admin', routerLink: 'user/sub-admin', code: 109 }
                 ]
-            },{
+            }, {
                 label: 'Company Intern',
                 routerLink: 'company/dashboard',
                 code: 142,
@@ -71,37 +78,37 @@ export class NavigationComponent implements OnInit {
         ];
 
         let accessAllowed = menu.filter((permissionsItems) => {
-            if(this.global.checkRollsAndPermission(permissionsItems.code)){
+            if (this.global.checkRollsAndPermission(permissionsItems.code)) {
                 delete permissionsItems.code;
-                if(permissionsItems.items != undefined){
-                    if(permissionsItems.items.length != 0){
+                if (permissionsItems.items != undefined) {
+                    if (permissionsItems.items.length != 0) {
                         let per = permissionsItems.items.filter((items) => {
-                            if(this.global.checkRollsAndPermission(items.code)){
+                            if (this.global.checkRollsAndPermission(items.code)) {
                                 delete items.code;
                                 return true;
-                            }else{
+                            } else {
                                 return false;
                             }
                         });
-                        permissionsItems.items = per ;
+                        permissionsItems.items = per;
                     }
                 }
-                return true; 
-            }else{
+                return true;
+            } else {
                 return false;
             }
         });
         this.items = accessAllowed;
     }
 
-    openChangePwdBox(){
+    openChangePwdBox() {
         this.openChangePwdBoxStatus = true;
     }
 
-    adminChangePwd(){
-        if(this.user.newpwd !== this.user.confirmpwd) {
+    adminChangePwd() {
+        if (this.user.newpwd !== this.user.confirmpwd) {
             alert('Please check Confirm Password');
-        }else{
+        } else {
             let data = {
                 id: this.global.getStorageDetail('userId')._id,
                 pwd: this.user.pwd,
@@ -109,27 +116,27 @@ export class NavigationComponent implements OnInit {
             };
             console.log(data);
             this.loginproxy.adminChangePwd(data)
-            .subscribe((success :any) => {
-                if(success.result){
-                    this.openChangePwdBoxStatus = false;
-                    alert('Your Password has been changed');
-                    console.log(success);
-                }else{
-                    alert('Old Password Not Matched');
-                    console.log(success);
-                }
-            })
-        } 
+                .subscribe((success: any) => {
+                    if (success.result) {
+                        this.openChangePwdBoxStatus = false;
+                        alert('Your Password has been changed');
+                        console.log(success);
+                    } else {
+                        alert('Old Password Not Matched');
+                        console.log(success);
+                    }
+                })
+        }
     }
 
     logout() {
         this.userId = this.global.getStorageDetail('userId')._id;
         this.loginproxy.TokenDestroy(this.userId)
             .subscribe((success) => {
-            console.log(success);
-            this.global.clearLocalStorage();
-            this.global.navigateToNewPage('/login');
-        });
+                console.log(success);
+                this.global.clearLocalStorage();
+                this.global.navigateToNewPage('/login');
+            });
     }
 
 }
