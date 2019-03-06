@@ -22,6 +22,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { StoreModule } from '@ngrx/store';
 import { LocalStorageModule } from 'angular-2-local-storage';
 import { DeviceDetectorModule } from 'ngx-device-detector';
+import { NgProgressModule } from 'ngx-progressbar';
 
 import { Global } from './../common/global';
 import { AppComponent } from './app.component';
@@ -93,7 +94,7 @@ import { TooltipModule } from 'primeng/tooltip';
     MenubarModule, CardModule, ChartModule, PanelModule, DataTableModule, DialogModule,
     DropdownModule, StepsModule, EditorModule, AccordionModule, SidebarModule,
     ConfirmDialogModule, TableModule, GrowlModule, NgHttpLoaderModule, TooltipModule,
-    FieldsetModule, CheckboxModule
+    FieldsetModule, CheckboxModule, NgProgressModule
   ],
   providers: [
     Global,

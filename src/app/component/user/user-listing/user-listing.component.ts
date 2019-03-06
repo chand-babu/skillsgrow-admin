@@ -11,6 +11,8 @@ export class UserListingComponent implements OnInit {
   public userSet = [];
   public cols: any[];
   public image: string;
+  public loader: boolean = true;//added by nandita
+  
   constructor(private UserListingProxy: UserListingProxy) { }
 
   ngOnInit() {

@@ -25,7 +25,8 @@
         </p-accordionTab>
         <p-sidebar [(visible)]="display" [fullScreen]="true" [baseZIndex]="10000" [style]="{'overflow': 'auto'}">
           <div class="container" [style]="{'overflow': 'visible'}">
-            <p-editor [(ngModel)]="sample[i].topics[j].description" #update="ngModel" [style]="{'min-height':'450px'}" (onInit)="editorInit($event)">
+            <p-editor [(ngModel)]="sample[i].topics[j] && sample[i].topics[j].description" #update="ngModel" [style]="{'min-height':'450px'}"
+              (onInit)="editorInit($event)">
               <p-header>
                 <span class="ql-formats">
                   <select class="ql-size">

@@ -2,6 +2,9 @@
   <div class="row">
     <h3>Users List</h3>
     <p-table [columns]="cols" [value]="userSet" [paginator]="true" [rows]="50">
+        <ng-template pTemplate="emptymessage">
+          <h2 class="saving">Loading<span>.</span><span>.</span><span>.</span></h2>
+        </ng-template>
         <ng-template pTemplate="colgroup" let-columns>
             <colgroup>
                 <col *ngFor="let col of columns" [style.width]="col.width">

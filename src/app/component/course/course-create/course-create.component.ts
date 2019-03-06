@@ -12,9 +12,11 @@ export class CourseCreateComponent implements OnInit {
   items: MenuItem[];
   activeIndex: number = 0;
   msgs: Message[] = [];
-  constructor(public router: Router) { }
+  constructor(public router: Router) {
+   }
 
   ngOnInit() {
+    
     this.items = [
             { label: 'Create Course', disabled: true,
               command: (event: any) => {
@@ -61,5 +63,7 @@ export class CourseCreateComponent implements OnInit {
           this.items[4].disabled = false;
         }
   }
+
+  
 
 }

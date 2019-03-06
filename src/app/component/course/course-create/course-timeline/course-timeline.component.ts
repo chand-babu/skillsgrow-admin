@@ -46,9 +46,13 @@ export class CourseTimelineComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.chapterDetails[0].title === '') {
+    // if (this.chapterDetails[0].title === '') {
+    //   this.chapterDetails = [];
+    // }
+    if (this.chapterDetails[0] && this.chapterDetails[0].title === '') {
       this.chapterDetails = [];
-    }
+    }//modified by nandita 
+    
     this.textvalue[this.timelineArrayOfData.length].order = this.chapterDetails.length;
     this.textvalue.push({title: '', topics: [], order: ''});
     this.timelineArrayOfData.push(this.textvalue[this.timelineArrayOfData.length]);
