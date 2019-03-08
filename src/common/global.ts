@@ -57,7 +57,7 @@ export class Global {
 
     public removeBulkData(key: string): void {
         this.storage.removeItem(key).subscribe((success: any) => {
-            console.log(success);
+            console.log('()', success, '(key)', key);
         });
     }
 
