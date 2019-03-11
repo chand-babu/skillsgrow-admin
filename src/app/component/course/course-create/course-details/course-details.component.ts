@@ -228,9 +228,11 @@ export class CourseDetailsComponent implements OnInit {
   }
 
   courseNameExistOrNot() {
+    console.log("++++++++++")
     let checkInEdit = (this.courseCategoryForm.courseName == this.existCourseName)
     this.courseDetailsProxy.checkCourseName(this.courseCategoryForm.courseName)
       .subscribe((success: any) => {
+        console.log("++++++fdfdfdf++++", success.result && !checkInEdit)
         if (success.result && !checkInEdit) {
           this.courseNameExist = true;
         } else {
