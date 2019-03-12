@@ -32,4 +32,8 @@ export class CourseDetailsProxy {
             data, false);
     }
 
+    checkCourseName(courseName){
+        return this.http.doGet(Constants.APIPATH + 'admin/check-course-name/' + courseName, true);
+    }
+
 }

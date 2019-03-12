@@ -46,6 +46,9 @@ export class CourseDetailsComponent implements OnInit {
   public width: number;
   public height: number;
 
+  public courseNameExist: boolean = false;//added by nandita
+  public existCourseName: any;//added by nandita
+
   constructor(public course: CourseCreateComponent,
     public global: Global,
     public courseDetailsProxy: CourseDetailsProxy, public message: MessageConfirm) {
@@ -56,18 +59,19 @@ export class CourseDetailsComponent implements OnInit {
   ngOnInit() {
     this.listCourseCategory();
     this.global.getBulkData('courseData')
-    .subscribe((success: any) => {
-      const courseData = success;
-      if (courseData) {
-        this.previewImageLink = true;
-        this.courseForField = courseData.status;
-        this.courseCategoryForm.active = courseData.active;
-      }
-      if (!this.display) {
-        this.uploadImageLargeField = false;
-        this.uploadImageSmallField = false;
-      }
-    });
+      .subscribe((success: any) => {
+        const courseData = success;
+        if (courseData) {
+          this.existCourseName = courseData.courseName; //added by nandita
+          this.previewImageLink = true;
+          this.courseForField = courseData.status;
+          this.courseCategoryForm.active = courseData.active;
+        }
+        if (!this.display) {
+          this.uploadImageLargeField = false;
+          this.uploadImageSmallField = false;
+        }
+      });
     // const courseData = this.global.getStorageDetail('courseData');
     // if (courseData) {
     //   this.previewImageLink = true;
@@ -125,16 +129,16 @@ export class CourseDetailsComponent implements OnInit {
         console.log(success);
         this.courseCategoryList = success.data;
         this.global.getBulkData('courseData')
-        .subscribe((success: any) => {
-          if(success){
-            this.courseCategoryForm = success;
-            this.courseCategoryList.filter((data => {
-              if (data._id === this.courseCategoryForm.categoryId) {
-                this.selectCategoryList = data;
-              }
-            }));
-          }
-        });
+          .subscribe((success: any) => {
+            if (success) {
+              this.courseCategoryForm = success;
+              this.courseCategoryList.filter((data => {
+                if (data._id === this.courseCategoryForm.categoryId) {
+                  this.selectCategoryList = data;
+                }
+              }));
+            }
+          });
       });
   }
 
@@ -222,5 +226,19 @@ export class CourseDetailsComponent implements OnInit {
       }
     }
   }
+
+  courseNameExistOrNot() {
+    console.log("++++++++++")
+    let checkInEdit = (this.courseCategoryForm.courseName == this.existCourseName)
+    this.courseDetailsProxy.checkCourseName(this.courseCategoryForm.courseName)
+      .subscribe((success: any) => {
+        console.log("++++++fdfdfdf++++", success.result && !checkInEdit)
+        if (success.result && !checkInEdit) {
+          this.courseNameExist = true;
+        } else {
+          this.courseNameExist = false;
+        }
+      });
+  }//added by nandita
 
 }

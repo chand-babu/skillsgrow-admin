@@ -5,6 +5,7 @@ import { LoginProxy } from '../login/login.proxy';
 import { ConfirmDialog } from 'primeng/confirmdialog';
 import { MessageConfirm } from '../../../common/message';
 import { Router } from '@angular/router';
+import { LocalStorage } from '@ngx-pwa/local-storage';
 
 @Component({
     selector: 'app-navigation',
@@ -21,7 +22,7 @@ export class NavigationComponent implements OnInit {
     };
     public openChangePwdBoxStatus: boolean = false;
     constructor(public route:Router,public global: Global, public loginproxy: LoginProxy,
-        public message: MessageConfirm) { }
+        public message: MessageConfirm, private storage: LocalStorage) { }
 
     ngOnInit() {
         let menu = [
@@ -40,9 +41,20 @@ export class NavigationComponent implements OnInit {
                     { label: 'Course List', routerLink: 'course/list', code: 103 },
                     {
                         label: 'Create New Course', routerLink: 'course/create', code: 104, command: (event: any) => {
-                            this.global.removeBulkData('courseData');
-                            this.route.navigateByUrl('/', { skipLocationChange: true }).then(() =>
-                                this.route.navigate(["/course/create"])); 
+                            // this.global.removeBulkData('courseData');
+                            this.global.getBulkData('courseData')
+                                .subscribe((success: any) => {
+                                    const courseData = success;
+                                    if (courseData) {
+                                        this.storage.removeItem('courseData').subscribe((success: any) => {
+                                            this.route.navigateByUrl('/', { skipLocationChange: true }).then(() =>
+                                                this.route.navigate(["/course/create"]));
+                                        });
+                                    }else{
+                                        this.route.navigateByUrl('/', { skipLocationChange: true }).then(() =>
+                                            this.route.navigate(["/course/create"]));
+                                    }
+                                }); 
                         }
                     },
                     { label: 'Add SSP', routerLink: 'course/addssp', code: 127 }

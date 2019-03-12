@@ -24,9 +24,10 @@
     <div class="col">
       <div class="form-group">
         <label>Course Name <span class="asterik">*</span></label>
-        <input type="text" class="form-control" name="courseName" [(ngModel)]="courseCategoryForm.courseName"
+        <input type="text" class="form-control" name="courseName" [(ngModel)]="courseCategoryForm.courseName" (change)="courseNameExistOrNot()"
           #courseName="ngModel" required />
         <div class="error-message" *ngIf="courseName.invalid && courseName.touched">Field is required</div>
+        <div class="error-message" *ngIf="courseNameExist">This courseName Already Exist</div>
       </div>
     </div>
   </div>
@@ -158,7 +159,8 @@
   </div>
   <div class="row default-margin-top">
     <div class="col">
-      <button type="submit" class="btn btn-success pull-right" [disabled]="courseDetails.invalid">Click to Save &
+<button type="submit" class="btn btn-success pull-right" [disabled]="courseDetails.invalid || courseNameExist">Click to
+  Save &
         Continue
         TimeLine
       </button>
