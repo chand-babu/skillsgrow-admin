@@ -54,6 +54,16 @@
   <div class="row default-margin-top">
     <div class="col">
       <div class="form-group">
+        <label>Course Keyword <span class="asterik">*</span></label>
+        <input type="text" class="form-control" name="key" [(ngModel)]="courseCategoryForm.courseKeywords"
+          #courseKeywords="ngModel" required />
+        <div class="error-message" *ngIf="courseKeywords.invalid && courseKeywords.touched">Field is required</div>
+      </div>
+    </div>
+  </div>
+  <div class="row default-margin-top">
+    <div class="col">
+      <div class="form-group">
         <label>Course Detailed Description <span class="asterik">*</span> (This will be visible on Landing Page)</label>
         <p-editor name="description" (onInit)="editorInit($event)" placeholder="Content" [(ngModel)]="courseCategoryForm.description"
           #description="ngModel" required [style]="{'height':'320px'}">
@@ -159,8 +169,9 @@
   </div>
   <div class="row default-margin-top">
     <div class="col">
-<button type="submit" class="btn btn-success pull-right" [disabled]="courseDetails.invalid || courseNameExist">Click to
-  Save &
+      <button type="submit" class="btn btn-success pull-right" [disabled]="courseDetails.invalid || courseNameExist">Click
+        to
+        Save &
         Continue
         TimeLine
       </button>
