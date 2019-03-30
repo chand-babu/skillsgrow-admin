@@ -63,7 +63,6 @@ export class CourseConfirmationComponent implements OnInit {
       const data = success;
       if (data.update) {
         delete data.update;
-        console.log("+++data=++++",data);
         this.courseDetailProxy.updateCourse(data)
         .subscribe((success: any) => {
           console.log(success);
@@ -71,7 +70,6 @@ export class CourseConfirmationComponent implements OnInit {
           this.global.navigateToNewPage('/course/categories');
         });
       } else {
-        console.log("&&&&&@@@@@@@@@@@@&&&&&&", data)
         this.courseDetailProxy.addCourseDetails(data)
         .subscribe((success) => {
           console.log(success);
