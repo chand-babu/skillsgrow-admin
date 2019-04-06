@@ -1,5 +1,5 @@
 export  module Constants {
-    export let APIPATH = 'http://skillsgrow.com:8080/';
+    export let APIPATH = 'https://skillsgrow.com:8080/';
     // export let APIPATH = 'http://localhost:3000/';
     export let IMAGEPATH = 'https://skillsgrow.com:8080/upload/';
     export let USER_LIST_API = 'admin/get-register';

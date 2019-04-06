@@ -81,7 +81,8 @@ import { TooltipModule } from 'primeng/tooltip';
     ListAppliedInternshipComponent
   ],
   imports: [
-    BrowserModule, FormsModule,
+    BrowserModule.withServerTransition({ appId: 'serverApp' }), 
+    FormsModule,
     HttpClientModule,
     NgbModule.forRoot(),
     LocalStorageModule.withConfig({
