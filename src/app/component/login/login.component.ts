@@ -30,23 +30,23 @@ export class LoginComponent implements OnInit {
   public deviceInfo = null;
 
   public browserDetails = {
-        userId: '',
-        ip: '',
-        browser: '',
-        userType: ''
+    userId: '',
+    ip: '',
+    browser: '',
+    userType: ''
   };
 
   constructor(public global: Global, public loginproxy: LoginProxy,
     private deviceService: DeviceDetectorService, private router: Router,
-  private loginservice: LoginService, public message: MessageConfirm) {
+    private loginservice: LoginService, public message: MessageConfirm) {
   }
 
   ngOnInit() {
-    console.log(!!this.global.getStorageDetail('token'));
+    // console.log(!!this.global.getStorageDetail('token'), '=======');
     if (!!this.global.getStorageDetail('token')) {
-        this.navigationStatus = false;
-        this.global.navigateToNewPage('/dashboard');
-      }
+      this.navigationStatus = false;
+      this.global.navigateToNewPage('/dashboard');
+    }
     this.clientIp();
     this.chrome = /msie\s|trident\/|Chrome\//i.test(window.navigator.userAgent);
     this.edge = /msie\s|trident\/|edge\//i.test(window.navigator.userAgent);
@@ -57,65 +57,66 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
     this.loginproxy.adminLogin(this.formData)
-    .subscribe((success) => {
-      console.log(success);
-      if (success.result === false) {
-        this.alertTrue = true;
-        this.confirmTrue = false;
-        this.message.alert('username and password is Invalid');
-      } else {
-        this.global.storeDataLocal('userId', success.data);
-        this.browserDetails.userId = success.data._id;
-        this.adminGenerateToken();
-        // this.router.navigate(['/dashboard']);
-      }
-    });
+      .subscribe((success) => {
+        // console.log(success);
+        if (success.result === false) {
+          this.alertTrue = true;
+          this.confirmTrue = false;
+          this.message.alert('username and password is Invalid');
+        } else {
+          this.global.storeDataLocal('userId', success.data);
+          this.browserDetails.userId = success.data._id;
+          this.adminGenerateToken();
+          // this.router.navigate(['/dashboard']);
+        }
+      });
   }
 
   clientIp() {
     this.loginproxy.browserDetails()
-    .subscribe((success: any) => {
-      console.log(success);
-      this.browserDetails.ip = success.ip;
-    });
+      .subscribe((success: any) => {
+        // console.log(success);
+        this.browserDetails.ip = success.ip;
+      });
   }
 
   adminGenerateToken() {
     this.deviceInfo = this.deviceService.getDeviceInfo();
     this.browserDetails.browser = this.deviceInfo.browser;
     this.browserDetails.userType = '0';
-    console.log(this.browserDetails);
+    // console.log(this.browserDetails);
     this.loginproxy.adminToken(this.browserDetails)
-    .subscribe((success) => {
-      console.log(success);
-      if (success.token) {
+      .subscribe((success) => {
+        // console.log(success);
+        if (success.token) {
+          // console.log(success,'___________');
           this.loginservice.login(this.formData);
           this.global.storeDataLocal('token', success);
-      } else {
-        if (success.data[0].tokenId) {
-          this.alertTrue = false;
-          this.confirmTrue = true;
-          this.message.confirm('You are already logged in some other device. ' +
-            'If you want to login in this device, you have to logout from other ' +
-            'device. Click OK to logout from other device');
         } else {
-          // alert('first time login');
-          this.loginservice.login(this.formData);
-          this.global.storeDataLocal('token', success);
+          if (success.data[0].tokenId) {
+            this.alertTrue = false;
+            this.confirmTrue = true;
+            this.message.confirm('You are already logged in some other device. ' +
+              'If you want to login in this device, you have to logout from other ' +
+              'device. Click OK to logout from other device');
+          } else {
+            // alert('first time login');
+            this.loginservice.login(this.formData);
+            this.global.storeDataLocal('token', success);
+          }
         }
-      }
-    });
+      });
   }
 
   destroyToken() {
     this.userId = this.global.getStorageDetail('userId')._id;
-      console.log(this.userId);
+    // console.log(this.userId);
     this.loginproxy.TokenDestroy(this.userId)
-    .subscribe((success) => {
-      console.log(success);
-      this.onSubmit();
-      // this.global.clearLocalStorage();
-    });
+      .subscribe((success) => {
+        // console.log(success);
+        this.onSubmit();
+        // this.global.clearLocalStorage();
+      });
   }
 
 }
