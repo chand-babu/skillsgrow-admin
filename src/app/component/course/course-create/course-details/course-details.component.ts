@@ -127,7 +127,7 @@ export class CourseDetailsComponent implements OnInit {
   listCourseCategory() {
     this.courseDetailsProxy.CategoryListData()
       .subscribe((success: any) => {
-        console.log(success);
+        // console.log(success);
         this.courseCategoryList = success.data;
         this.global.getBulkData('courseData')
           .subscribe((success: any) => {
@@ -170,6 +170,7 @@ export class CourseDetailsComponent implements OnInit {
           this.height = img.height;
           if (this.width === 250 && this.height === 200) {
             const formData = new FormData();
+            console.log("++++++formData+++++", formData)
             formData.append('image', evt.target.files[0], evt.target.files[0].name);
             this.uploadImageCommonFunction(formData, imageType.name);
           } else {

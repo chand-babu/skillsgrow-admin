@@ -1,0 +1,165 @@
+<form *ngIf="blogDetails" autocomplete="off" class="container" #blogDetails="ngForm" (ngSubmit)="onSubmit()">
+   <div class="row default-margin-top">
+     <div class="col">
+       <div class="form-group">
+         <label>Select Category <span class="asterik">*</span></label>
+         <select class="form-control" name="category" #category="ngModel" [(ngModel)]="blogCategoryForm.categoryId"
+           required>
+           <option *ngFor="let category of courseCategoryList" [ngValue]="category._id">{{category.categoryName}}
+           </option>
+         </select>
+       </div>
+     </div>
+   </div>
+  <div class="row default-margin-top">
+    <div class="col">
+      <div class="form-group">
+        <label>Blog Name <span class="asterik">*</span></label>
+        <input type="text" class="form-control" name="blogName" [(ngModel)]="blogCategoryForm.blogName"
+          (change)="blogNameExistOrNot()" #blogName="ngModel" required />
+        <div class="error-message" *ngIf="blogName.invalid && blogName.touched">Field is required</div>
+        <div class="error-message" *ngIf="blogNameExist">This blogName Already Exist</div>
+      </div>
+    </div>
+  </div>
+   <div class="row default-margin-top">
+     <div class="col">
+       <div class="form-group">
+         <label>Blog Short Description (maximum 500 Characters only) <span class="asterik">*</span></label>
+         <input type="text" class="form-control" name="shortDescription" [(ngModel)]="blogCategoryForm.shortDescription"
+           #shortDescription="ngModel" maxlength="500" required />
+         <div class="error-message" *ngIf="shortDescription.invalid && shortDescription.touched">Field is required</div>
+       </div>
+     </div>
+   </div>
+  <div class="row default-margin-top">
+    <div class="col">
+      <div class="form-group">
+        <label>Blog Description <span class="asterik">*</span></label>
+        <p-editor name="description" (onInit)="editorInit($event)" placeholder="Content"
+          [(ngModel)]="blogCategoryForm.description" #description="ngModel" required [style]="{'height':'320px'}">
+          <p-header>
+            <span class="ql-formats">
+              <select class="ql-size">
+                <option value="small">Petit</option>
+                <option selected></option>
+                <option value="large">Sous-titre</option>
+                <option value="huge">Titre</option>
+              </select>
+            </span>
+            <span class="ql-formats">
+              <button class="ql-bold" aria-label="Bold"></button>
+              <button class="ql-italic" aria-label="Italic"></button>
+              <button class="ql-underline" aria-label="Underline"></button>
+              <button class="ql-strike" aria-label="Strike"></button>
+            </span>
+            <span class="ql-formats">
+              <select title="Text Color" class="ql-color" defaultValue="rgb(0, 0, 0)">
+                <option value="rgb(0, 0, 0)" label="rgb(0, 0, 0)"></option>
+                <option value="rgb(61, 20, 102)" label="rgb(61, 20, 102)"></option>
+              </select>
+              <span class="ql-format-separator"></span>
+              <select title="Background Color" class="ql-background" defaultValue="rgb(255, 255, 255)">
+                <option value="rgb(0, 0, 0)" label="rgb(0, 0, 0)"></option>
+                <option value="rgb(61, 20, 102)" label="rgb(61, 20, 102)"></option>
+              </select>
+            </span>
+            <span class="ql-formats">
+              <button class="ql-list" value="ordered"></button>
+              <button class="ql-list" value="bullet"></button>
+              <select title="Text Alignment" class="ql-align">
+                <option selected>Gauche</option>
+                <option value="center" label="Center"></option>
+                <option value="right" label="Right"></option>
+                <option value="justify" label="Justify"></option>
+              </select>
+            </span>
+            <span class="ql-formats">
+              <button aria-label="Link" class="ql-link"></button>
+              <button aria-label="Image" class="ql-image"></button>
+              <button aria-label="Video" class="ql-video"></button>
+            </span>
+          </p-header>
+        </p-editor>
+        <div class="error-message" *ngIf="description.invalid && description.touched">Field is required</div>
+      </div>
+    </div>
+  </div>
+  <div class="row default-margin-top">
+    <div class="col">
+      <div class="form-group">
+        <label>Blog Image <span class="asterik">*</span> (size: 1024 X 768)</label>
+        <div *ngIf="previewImageLink" class="preview-image">
+          <a (click)="previewImage(blogCategoryForm.image, 0)">Preview Image</a>
+          <span>OR</span>
+          <a (click)="previewImage(blogCategoryForm.image, 1)">Update New One</a>
+        </div>
+        <div *ngIf="!previewImageLink">
+          <input type="file" class="form-control" name="blogImage" #blogImage="ngModel"
+            (change)="uploadCategoryImage($event, blogImage)" [(ngModel)]="blogImage.image" required>
+          <div class="error-message" *ngIf="blogImage.errors?.required && blogImage.touched">
+            Field is required
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <div class="row default-margin-top">
+    <div class="col-6">
+      <div class="form-group">
+        <label>Video URL (Promotional Video if any)</label>
+        <input type="url" class="form-control" name="video" [(ngModel)]="blogCategoryForm.video" #video="ngModel" />
+        <div class="error-message" *ngIf="video.invalid && video.touched">Field is required</div>
+      </div>
+    </div>
+  </div> -->
+  <div class="row default-margin-top">
+    <div class="col">
+      <button type="submit" class="btn btn-success pull-right"
+        [disabled]="blogDetails.invalid || blogNameExist">Continue</button>
+    </div>
+  </div>
+
+  <!-- Blog Image Dialog box -->
+  <p-dialog header="Image" [(visible)]="display" [modal]="true" [responsive]="true" [width]="1000" [baseZIndex]="10000"
+    [positionTop]="50" [resizable]="true">
+    <div class="text-center" *ngIf="displayTheImageInDialogBox">
+      <img style="width: 250px; height: 200px;" [src]="imagePath + displayTheImageInDialogBox" alt="banner-image">
+    </div>
+    <div *ngIf="uploadImageField">
+      <label>Blog Image <span class="asterik">*</span> (Size: 200 X 250)</label>
+       <input type="file" class="form-control" name="blogImage" #blogImage="ngModel"
+         (change)="uploadCategoryImage($event, blogImage)" [(ngModel)]="blogImage.image" required>
+       <div class="error-message" *ngIf="blogImage.errors?.required && blogImage.touched">
+         Field is required
+       </div>
+    </div>
+    <p-footer>
+      <button class="btn btn-success" type="button" (click)="display=false">OK</button>
+    </p-footer>
+  </p-dialog>
+</form>
+
+<div *ngIf="confirmationBlog" class="col text-center">
+  <h1>Are you sure that all the Blog material is correct and is ready to save</h1>
+  <button style="margin-right: 15px" type="button" class="btn btn-lg btn-primary default-margin-top"
+    (click)="openLg(content)">Preview Blog</button>
+  <button type="button" class="btn btn-lg btn-success default-margin-top" (click)="confirmationSubmit()">Update
+    Blog</button>
+</div>
+
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Blog Content Preview</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" *ngFor="let x of blogPreview">
+    <h2>{{x.blogName}}</h2>
+    <p [innerHtml]="editorContent"></p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-success" (click)="c('Close click')">Close</button>
+  </div>
+</ng-template>

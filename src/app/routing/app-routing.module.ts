@@ -4,11 +4,11 @@ import { LoginComponent, DashboardComponent,
   CourseDashboardComponent, CourseCategoriesComponent,
   CourseCreateComponent, CourseExamComponent, CourseListComponent,
   CourseDetailsComponent, CourseTimelineComponent, CourseLearningComponent,
-  CourseTestComponent, CourseConfirmationComponent, BannerImagesComponent, CourseFaqComponent,
+  CourseTestComponent, EditCourseTestComponent, CourseConfirmationComponent, BannerImagesComponent, CourseFaqComponent,
   AddSSPComponent, UserComponent, UserDashboardComponent, UserListingComponent,
   RollsPermissionsComponent, SubAdminComponent, CompanyComponent,
   CompanyDashboardComponent, CompanyListComponent, ListInternshipComponent,
-  ListAppliedInternshipComponent } from './../component/all';
+  ListAppliedInternshipComponent, BlogCreateComponent, BlogCommentListComponent, BlogListComponent, BlogEditComponent} from './../component/all';
 import { LoginGuard } from '../component/guard/login.guard';
 import { StepsGuard } from '../component/guard/steps.guard';
 
@@ -34,6 +34,7 @@ const routes: Routes = [
   },
   { path: 'course/list', component: CourseListComponent, canActivate: [LoginGuard]},
   { path: 'course/exam/:parentIndex/:childIndex', component: CourseExamComponent, canActivate: [LoginGuard]},
+  { path: 'course/edit-test/:parentIndex/:childIndex', component: EditCourseTestComponent, canActivate: [LoginGuard] },
   { path: 'bannerimages', component: BannerImagesComponent, canActivate: [LoginGuard]},
   {
     path: 'user',
@@ -59,6 +60,12 @@ const routes: Routes = [
       { path: 'internship-applied/:companyId/:id', component: ListAppliedInternshipComponent }
     ]
   },
+  { path: 'blog/create', component: BlogCreateComponent, canActivate: [LoginGuard] },
+  { path: 'blog/list', component: BlogListComponent, canActivate: [LoginGuard] },
+  { path: 'blog/comment/list', component: BlogCommentListComponent, canActivate: [LoginGuard] },
+  { path: 'blog/edit', component: BlogEditComponent, canActivate: [LoginGuard] },
+
+
   /* If URL does not match any path redirec to login Page */
   { path: '**', redirectTo: '/login', pathMatch: 'full'}
 ];

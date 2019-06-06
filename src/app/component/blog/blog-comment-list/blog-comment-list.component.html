@@ -1,0 +1,32 @@
+<div class="container default-margin-top">
+  <div class="row">
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead>
+          <th>S.no</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Comment Message</th>
+          <th *ngIf="global.checkRollsAndPermission(130)">Status</th>
+          <th>Actions</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let x of blogCommentListData; let i = index">
+            <td>{{i+1}}</td>
+            <td>{{x.userName}}</td>
+            <td>{{x.userEmail}}</td>
+            <td>{{x.chatMessage}}</td>
+            <td *ngIf="global.checkRollsAndPermission(130)">
+              <button [class]="(x.active == true) ? 'btn btn-success' : 'btn btn-danger'"
+                (click)="changeBlogCommentStatus(x._id, x.active)">{{(x.active == true) ? 'Aproved' : 'Disapproved'}}
+              </button>
+            </td>
+            <td>
+              <button  class="btn btn-danger" (click)="deleteBlogComment(x._id)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

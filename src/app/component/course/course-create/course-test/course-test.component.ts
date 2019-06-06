@@ -32,20 +32,21 @@ export class CourseTestComponent implements OnInit {
     this.global.getBulkData('courseData')
     .subscribe((success: any) => {
       this.learningDetails = success.timeline;
+      console.log("timeline data===>", this.learningDetails);
     });
     // this.learningDetails = this.global.getStorageDetail('courseData').timeline;
-    /* const courseTimeline = this.learningDetails;
-    courseTimeline.filter((data) => {
-      data.topics.filter((topic) => {
-        if (topic.questions) {
-          this.allQuestion = [];
-          this.uploadedQuestions = topic.questions;
-          this.changingUploadedQuestionFormat();
-          topic.questions = this.allQuestion;
-          console.log(this.allQuestion);
-        }
-      });
-    }); */
+    // const courseTimeline = this.learningDetails;
+    // courseTimeline.filter((data) => {
+    //   data.topics.filter((topic) => {s
+    //     if (topic.questions) {
+    //       this.allQuestion = [];
+    //       this.uploadedQuestions = topic.questions;
+    //       this.changingUploadedQuestionFormat();
+    //       topic.questions = this.allQuestion;
+    //       console.log(this.allQuestion);
+    //     }
+    //   });
+    // }); 
   }
 
   onFileChange(evt: any) {
@@ -126,6 +127,11 @@ export class CourseTestComponent implements OnInit {
   addQuestionPage(i, j) {
     this.router.navigate(['course/exam', i, j]);
   }
+
+  editQuestionPage(i,j){
+    this.router.navigate(['course/edit-test', i, j]);
+  }
+
 
   // changing uploaded question format
   changingUploadedQuestionFormat() {

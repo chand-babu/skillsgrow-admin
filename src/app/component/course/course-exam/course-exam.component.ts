@@ -29,6 +29,7 @@ export class CourseExamComponent implements OnInit {
   public passageTextBox: boolean = false;
   public imageTextBox: boolean = false;
   public imageText: boolean = false;
+  public writeTextBox: boolean = false;
   public parentIndex: any;
   public childIndex: any;
   public questionsArray = [];
@@ -55,13 +56,13 @@ export class CourseExamComponent implements OnInit {
       this.childIndex = params['childIndex'];
     });
     this.global.getBulkData('courseData')
-    .subscribe((success: any) => {
-      this.courseData = success;
-      const getQuestionFromLocalStorage = this.courseData.timeline[this.parentIndex].topics[this.childIndex].questions;
-      if (getQuestionFromLocalStorage) {
-        this.questionsArray = getQuestionFromLocalStorage;
-      }
-    });
+      .subscribe((success: any) => {
+        this.courseData = success;
+        const getQuestionFromLocalStorage = this.courseData.timeline[this.parentIndex].topics[this.childIndex].questions;
+        if (getQuestionFromLocalStorage) {
+          this.questionsArray = getQuestionFromLocalStorage;
+        }
+      });
   }
 
   onSubmit() {
@@ -102,27 +103,37 @@ export class CourseExamComponent implements OnInit {
       this.passageTextBox = true;
       this.imageTextBox = false;
       this.displayInstructionAndTitle = true;
+      this.writeTextBox = false;
     } else if (value === '2') {
       this.passageTextBox = false;
       this.imageTextBox = true;
       this.imageText = true;
       this.displayInstructionAndTitle = true;
-    }else if (value === '3') {
+      this.writeTextBox = false;
+    } else if (value === '3') {
       this.passageTextBox = false;
       this.imageTextBox = true;
       this.imageText = false;
       this.displayInstructionAndTitle = true;
+      this.writeTextBox = false;
+    } else if (value === '4') {
+      this.writeTextBox = true;
+      this.passageTextBox = false;
+      this.imageTextBox = false;
+      this.displayInstructionAndTitle = false;
     } else {
       this.passageTextBox = false;
       this.imageTextBox = false;
       this.displayInstructionAndTitle = false;
+      this.writeTextBox = false;
     }
   }
 
-  uploadImage(file) { console.log(file.target.files[0]);
-    const image: any = file.target.files[0]; 
-    let fileFormat = image.type.split('/')[0]; 
-    if(fileFormat == 'image'){
+  uploadImage(file) {
+    console.log(file.target.files[0]);
+    const image: any = file.target.files[0];
+    let fileFormat = image.type.split('/')[0];
+    if (fileFormat == 'image') {
       this.formateErr = false;
       this.size = image.size;
       const fr = new FileReader();
@@ -142,24 +153,24 @@ export class CourseExamComponent implements OnInit {
         img.src = fr.result;
       };
       fr.readAsDataURL(image);
-    } else if(fileFormat == 'audio'){ 
+    } else if (fileFormat == 'audio') {
       this.formateErr = false;
       this.size = image.size;
       const fr = new FileReader();
       fr.onload = () => { // when file has loaded  
         const formData = new FormData();
-          formData.append('image', file.target.files[0]); 
-          this.courseCategoriesproxy.uploadImageCategory(formData)
-            .subscribe((success: any) => {
-              console.log(success);
-              this.questionsFormobj.imageQuestion = success.filename;
-            });
+        formData.append('image', file.target.files[0]);
+        this.courseCategoriesproxy.uploadImageCategory(formData)
+          .subscribe((success: any) => {
+            console.log(success);
+            this.questionsFormobj.imageQuestion = success.filename;
+          });
       };
       fr.readAsDataURL(image);
-    }else {
+    } else {
       this.formateErr = true;
     }
-    
+
   }
 
   saveAndContinue() {
