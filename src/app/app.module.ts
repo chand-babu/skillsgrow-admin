@@ -27,18 +27,34 @@ import { NgProgressModule } from 'ngx-progressbar';
 import { Global } from './../common/global';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './routing/app-routing.module';
-import { LoginComponent, DashboardComponent, CourseCategoriesComponent,
+import {
+  LoginComponent, DashboardComponent, CourseCategoriesComponent,
   CourseDashboardComponent, CourseListComponent, CourseCreateComponent,
   CourseExamComponent, NavigationComponent, BannerImagesComponent, CourseFaqComponent,
   AddSSPComponent, UserComponent, UserListingComponent, UserDashboardComponent,
   RollsPermissionsComponent, SubAdminComponent, CompanyComponent,
   CompanyDashboardComponent, CompanyListComponent, ListInternshipComponent,
-  ListAppliedInternshipComponent } from './component/all';
+  ListAppliedInternshipComponent
+} from './component/all';
 import { CourseDetailsComponent } from './component/course/course-create/course-details/course-details.component';
 import { CourseTimelineComponent } from './component/course/course-create/course-timeline/course-timeline.component';
 import { CourseLearningComponent } from './component/course/course-create/course-learning/course-learning.component';
 import { CourseTestComponent } from './component/course/course-create/course-test/course-test.component';
+
+import { EditCourseTestComponent } from './component/course/edit-course-test/edit-course-test.component';
+
 import { CourseConfirmationComponent } from './component/course/course-create/course-confirmation/course-confirmation.component';
+
+import { BlogCreateComponent } from './component/blog/blog-create/blog-create.component';
+import { BlogListComponent } from './component/blog/blog-list/blog-list.component';
+import { BlogEditComponent } from './component/blog/blog-edit/blog-edit.component';
+import { BlogCommentListComponent } from './component/blog/blog-comment-list/blog-comment-list.component';
+
+
+import { AngularEditorModule } from '@kolkov/angular-editor';
+
+
+
 import { HttpUtil } from './../common/http.util';
 import { LoginGuard } from './component/guard/login.guard';
 import { LoginService } from './component/guard/login.service';
@@ -49,6 +65,8 @@ import { TableModule } from 'primeng/table';
 import { NgHttpLoaderModule } from 'ng-http-loader';
 import { DataService } from '../common/data.service';
 import { TooltipModule } from 'primeng/tooltip';
+
+
 
 @NgModule({
   declarations: [
@@ -65,6 +83,7 @@ import { TooltipModule } from 'primeng/tooltip';
     CourseTimelineComponent,
     CourseLearningComponent,
     CourseTestComponent,
+    EditCourseTestComponent,
     CourseConfirmationComponent,
     BannerImagesComponent,
     CourseFaqComponent,
@@ -78,12 +97,19 @@ import { TooltipModule } from 'primeng/tooltip';
     CompanyDashboardComponent,
     CompanyListComponent,
     ListInternshipComponent,
-    ListAppliedInternshipComponent
+    ListAppliedInternshipComponent,
+
+    BlogCreateComponent,
+    BlogListComponent,
+    BlogEditComponent,
+    BlogCommentListComponent
   ],
   imports: [
-    BrowserModule.withServerTransition({ appId: 'serverApp' }), 
+    BrowserModule.withServerTransition({ appId: 'serverApp' }),
     FormsModule,
     HttpClientModule,
+    AngularEditorModule,
+    
     NgbModule.forRoot(),
     LocalStorageModule.withConfig({
       prefix: '',

@@ -1,0 +1,202 @@
+<div class="container">
+  <div class="row default-margin-top">
+    <div class="col table-responsive">
+      <h4 class="text-center">Edit Questions</h4>
+      <div class="text-right">
+        <span (click)="saveAndContinue()" class="btn btn-info">Save &
+          Continue</span>
+      </div>
+    </div>
+  </div>
+  <div class="row default-margin-top">
+    <div class="col table-responsive">
+      <p-accordion>
+        <p-accordionTab *ngFor="let ques of questionsFormobj; let quesIndex = index"
+          header="Question No.{{quesIndex+1}}">
+          <form autocomplete="off" #questionForm="ngForm" (ngSubmit)="onSubmit(quesIndex)">
+
+            <div class="form-group">
+              <label><b>Question Type</b> <span class="asterik">*</span></label>
+              <select class="form-control" name="questionStatus" [disabled]='true' [(ngModel)]="ques.questionStatus"
+                #questionStatus="ngModel" (change)="questionTypeCheckStatus(ques.questionStatus)" required>
+                <option value="">Choose question type</option>
+                <option value="0">Choose/Multiple</option>
+                <option value="1">Passage</option>
+                <option value="2">Image based question</option>
+                <option value="3">Audio based question</option>
+                <option value="4">Write based question</option>
+              </select>
+              <div class="error-message" *ngIf="questionStatus.touched && questionStatus.invalid">Question Status is
+                required</div>
+            </div>
+
+            <div *ngIf="ques.questionStatus != 0 && ques.questionStatus != 4" class="form-group">
+              <label><b>Title</b> <span class="asterik">*</span></label>
+              <input class="form-control" name="passageTitle" [(ngModel)]="ques.passageTitle" #passageTitle="ngModel"
+                required>
+              <div class="error-message" *ngIf="passageTitle.touched && passageTitle.invalid">Passage title is required
+              </div>
+            </div>
+
+            <div *ngIf="ques.questionStatus != 0 && ques.questionStatus != 4" class="form-group">
+              <label><b>Instruction</b> <span class="asterik">*</span></label>
+              <textarea class="form-control" name="instruction" [(ngModel)]="ques.instruction" #instruction="ngModel"
+                required></textarea>
+              <div class="error-message" *ngIf="instruction.touched && instruction.invalid">Instruction is required
+              </div>
+            </div>
+
+            <div *ngIf="ques.questionStatus == 1" class="form-group">
+              <label><b>Passage</b> <span class="asterik">*</span></label>
+              <textarea class="form-control" name="passage" [(ngModel)]="ques.passage" #passage="ngModel"
+                required></textarea>
+              <div class="error-message" *ngIf="passage.touched && passage.invalid">passage is required</div>
+            </div>
+
+            <div *ngIf="ques.questionStatus == 2" class="form-group preview-image">
+              <a (click)="previewImage(ques.imageQuestion, 0,ques.questionStatus,quesIndex)">Preview Image</a>
+              <span>OR</span>
+              <a (click)="previewImage(ques.imageQuestion, 1,ques.questionStatus,quesIndex)">Update New One</a>
+            </div>
+
+            <div *ngIf="ques.questionStatus == 3" class="form-group preview-image">
+              <a (click)="previewImage(ques.imageQuestion, 0,ques.questionStatus,quesIndex)">Preview Audio</a>
+              <span>OR</span>
+              <a (click)="previewImage(ques.imageQuestion, 1,ques.questionStatus,quesIndex)">Update New One</a>
+            </div>
+
+            <div *ngIf="ques.questionStatus == 1">
+              <div [class]="passage-question-design">
+                <p-accordion>
+                  <p-accordionTab *ngFor="let passageques of ques.question; let passagequesIndex = index"
+                    header="Question No.{{quesIndex+1}}.{{passagequesIndex+1}}">
+                    <form autocomplete="off" #passageQuestionForm="ngForm"
+                      (ngSubmit)="onPassageQuesSubmit(quesIndex,passagequesIndex)">
+                      <div class="col-12 form-group">
+                        <label><b>Question</b> <span class="asterik">*</span></label>
+                        <input class="form-control" name="question{{passagequesIndex}}"
+                          [(ngModel)]="ques.question[passagequesIndex].question" #question="ngModel" required>
+                        <div class="error-message" *ngIf="question.touched && question.invalid">Question is required
+                        </div>
+                      </div>
+                      <div class="col-10 form-group" *ngFor="let option of passageques.options;let i = index;">
+                        <label><b>Options.{{i+1}}</b> <span class="asterik">*</span></label>
+                        <input class="form-control" name="options{{i}}" [(ngModel)]="passageques.options[i]"
+                          #options="ngModel" required>
+                        <div class="error-message" *ngIf="options.touched && options.invalid">options is required
+                        </div>
+                      </div>
+                      <div class="col-12 form-group">
+                        <label><b>Answer</b> <span class="asterik">*</span></label>
+                        <input class="form-control" name="answer{{passagequesIndex}}"
+                          [(ngModel)]="ques.question[passagequesIndex].answer" #answer="ngModel" required>
+                        <div class="error-message" *ngIf="answer.touched && answer.invalid">Answer is required</div>
+                      </div>
+                      <div class="col-12 form-group">
+                        <label><b>Time</b> <span class="asterik">*</span></label>
+                        <input type="number" class="form-control" placeholder="Timing in seconds"
+                          name="time{{passagequesIndex}}" [(ngModel)]="ques.question[passagequesIndex].time"
+                          #time="ngModel" required>
+                        <div class="error-message" *ngIf="time.touched && time.invalid">timing is required</div>
+                      </div>
+                      <div class="col-12 text-right">
+                        <button class="btn btn-success" [disabled]='passageQuestionForm.invalid'
+                          style='margin-right: 12px;'>Update passage
+                          question</button>
+                           <button class="btn btn-danger"
+                             (click)="deletePassageQuestion(quesIndex,passagequesIndex)">Delete</button>
+                      </div>
+                    </form>
+                  </p-accordionTab>
+                </p-accordion>
+
+              </div>
+            </div>
+
+            <div *ngIf="ques.questionStatus != 1">
+              <div [class]="(passageTextBox) ? 'passage-question-design row' : 'row'">
+                <div *ngIf="passageTextBox" class="col-12">
+                  <p><b>Note : </b>User can add multiple of question</p>
+                </div>
+                <div class="col-12" [hidden]="ques.questionStatus == 4">
+                  <label><b>Question</b> <span class="asterik">*</span></label>
+                  <input class="form-control" name="question" [(ngModel)]="ques.question" #question="ngModel" required>
+                  <div class="error-message" *ngIf="question.touched && question.invalid">Question is required</div>
+                </div>
+
+                <div class="col-12" *ngIf="ques.questionStatus == 4">
+                  <label><b>Question</b> <span class="asterik">*</span></label>
+                   <textarea class="form-control" name="question" [(ngModel)]="ques.question" #question="ngModel"
+                     required></textarea>
+                  <div class="error-message" *ngIf="question.touched && question.invalid">Question is required</div>
+                </div>
+
+                <div class="col-12 form-group" [hidden]="ques.questionStatus == 4">
+                  <div *ngFor="let option of ques.options;let i = index;">
+                    <label><b>Options</b> <span class="asterik">*</span></label>
+                    <input class="form-control" name="options{{i}}" [(ngModel)]="ques.options[i]" #options="ngModel" required>
+                    <div class="error-message" *ngIf="options.touched && options.invalid">options is required</div>
+                  </div>
+                </div>
+                
+                <div class="col-12 form-group" [hidden]="ques.questionStatus == 4">
+                  <label><b>Answer</b> <span class="asterik">*</span></label>
+                  <input class="form-control" name="answer" [(ngModel)]="ques.answer" #answer="ngModel" required>
+                  <div class="error-message" *ngIf="answer.touched && answer.invalid">Answer is required</div>
+                </div>
+
+                <div class="col-12 form-group" *ngIf="ques.questionStatus == 4">
+                  <label><b>Answer</b> <span class="asterik">*</span></label>
+                  <textarea class="form-control" name="answer" [(ngModel)]="ques.answer" #answer="ngModel" required></textarea>
+                  <div class="error-message" *ngIf="answer.touched && answer.invalid">Answer is required</div>
+                </div>
+
+                <div class="col-12 form-group">
+                  <label><b>Time</b> <span class="asterik">*</span></label>
+                  <input type="number" class="form-control" placeholder="Timing in seconds" name="timing"
+                    [(ngModel)]="ques.timing" #timing="ngModel" required>
+                  <div class="error-message" *ngIf="timing.touched && timing.invalid">timing is required</div>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="form-group text-right">
+              <button class="btn btn-success" [disabled]="questionForm.invalid"
+                style='margin-right: 12px;'>Update</button>
+              <button class="btn btn-danger" (click)="deleteQuestion(quesIndex)">Delete</button>
+            </div>
+            <!-- Ques Image Dialog box -->
+            <p-dialog header="Image" [(visible)]="display" [modal]="true" [responsive]="true" [width]="1000"
+              [baseZIndex]="10000" [positionTop]="50" [resizable]="true">
+              <div *ngIf="imageText">
+                <div class="text-center" *ngIf="displayTheImageInDialogBox">
+                  <img style="width: 250px; height: 200px;" [src]="imagePath + displayTheImageInDialogBox"
+                    alt="banner-image">
+                </div>
+              </div>
+              <div *ngIf="!imageText">
+                <div class="text-center" *ngIf="displayTheImageInDialogBox">
+                  <audio controls>
+                    <source [src]="imagePath + displayTheImageInDialogBox" type="audio/mpeg">
+                  </audio>
+                </div>
+              </div>
+              <div *ngIf="uploadImageField">
+                <label><b>Upload {{ imageText == true ? 'Image':'Audio' }} </b> <span class="asterik">*</span></label>
+                <input type="file" class="form-control" name="imageQuestion" [(ngModel)]="imageQuestion.image"
+                  #imageQuestion="ngModel" (change)="uploadImage($event)" required>
+                <div class="error-message" *ngIf="imageQuestion.touched && imageQuestion.invalid">
+                  {{ imageText == true ? 'Image':'Audio' }} is required</div>
+                <div class="error-message" *ngIf="formateErr">Invalid File Format</div>
+              </div>
+              <p-footer>
+                <button class="btn btn-success" type="button" (click)="display=false">OK</button>
+              </p-footer>
+            </p-dialog>
+          </form>
+        </p-accordionTab>
+      </p-accordion>
+    </div>
+  </div>
+</div>

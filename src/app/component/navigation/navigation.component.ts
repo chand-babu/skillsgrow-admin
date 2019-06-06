@@ -21,7 +21,7 @@ export class NavigationComponent implements OnInit {
         confirmpwd: ''
     };
     public openChangePwdBoxStatus: boolean = false;
-    constructor(public route:Router,public global: Global, public loginproxy: LoginProxy,
+    constructor(public route: Router, public global: Global, public loginproxy: LoginProxy,
         public message: MessageConfirm, private storage: LocalStorage) { }
 
     ngOnInit() {
@@ -50,11 +50,11 @@ export class NavigationComponent implements OnInit {
                                             this.route.navigateByUrl('/', { skipLocationChange: true }).then(() =>
                                                 this.route.navigate(["/course/create"]));
                                         });
-                                    }else{
+                                    } else {
                                         this.route.navigateByUrl('/', { skipLocationChange: true }).then(() =>
                                             this.route.navigate(["/course/create"]));
                                     }
-                                }); 
+                                });
                         }
                     },
                     { label: 'Add SSP', routerLink: 'course/addssp', code: 127 }
@@ -85,6 +85,17 @@ export class NavigationComponent implements OnInit {
                 items: [
                     { label: 'Dashboard', routerLink: 'company/dashboard', code: 143 },
                     { label: 'Company Lists', routerLink: 'company/list', code: 144 }
+                ]
+            }, {
+                label: 'Blog Management',
+                routerLink: 'blog',
+                code: 145,
+                items: [
+                    { label: 'Blog List', routerLink: 'blog/list', code: 146 },
+                    {
+                        label: 'Create New Blog', routerLink: 'blog/create', code: 147
+                    },
+                    { label: 'Blog Comment List', routerLink: 'blog/comment/list', code: 148 },
                 ]
             }
         ];

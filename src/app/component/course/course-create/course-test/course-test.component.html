@@ -1,8 +1,7 @@
 <div class="container">
   <div class="row default-margin-top">
     <div class="col table-responsive">
-      <button type="button" class="btn btn-primary pull-right"
-      (click)="saveAndContinue()">Save & Continue</button>
+      <button type="button" class="btn btn-primary pull-right" (click)="saveAndContinue()">Save & Continue</button>
     </div>
   </div>
   <div class="row default-margin-top">
@@ -24,8 +23,13 @@
                   <button type="text" (click)="showDialog(i,j)" pButton label="Add Questions via excel"></button>
                   <span>-OR-</span>
                   <button type="text" (click)="addQuestionPage(i,j)" pButton label="Add Questions via form"></button>
+                  <span *ngIf="y.questions.length>0">-OR-</span>
+                  <button *ngIf="y.questions.length>0" type="text" (click)="editQuestionPage(i,j)" pButton
+                    label="Edit Questions"></button>
                 </td>
-                <td>{{(y.questions) ? 'Question Upload successfully' : 'Question not Uploaded'}}</td>
+                <!-- <td>{{(y.questions) ? 'Question Upload successfully' : 'Question not Uploaded'}}</td> -->
+                <td>{{(y.questions.length>0) ? 'Question Upload successfully' : 'Question not Uploaded'}}</td>
+
               </tr>
             </tbody>
           </table>
@@ -34,19 +38,19 @@
     </div>
   </div>
   <div class="row default-margin-top">
-    <p-dialog header="Upload Questions" [(visible)]="display" [modal]="true" [responsive]="true" [width]="450" [minWidth]="200" [minY]="70">
+    <p-dialog header="Upload Questions" [(visible)]="display" [modal]="true" [responsive]="true" [width]="450"
+      [minWidth]="200" [minY]="70">
       <div class="col-12 text-center default-margin-top">
-          <div class="common-file">
-              <input type="file" (change)="onFileChange($event)">
-          </div>
-          <div class="temp-btn">
-              <button type="button" class="btn btn-primary">Upload Excel File</button>
-          </div>
+        <div class="common-file">
+          <input type="file" (change)="onFileChange($event)">
+        </div>
+        <div class="temp-btn">
+          <button type="button" class="btn btn-primary">Upload Excel File</button>
+        </div>
       </div>
       <div class="col-12 text-center default-margin-top">
-          <button type="button" class="btn btn-primary"
-         (click)="excelFileDownload()">Download Excel File</button>
-        </div>
+        <button type="button" class="btn btn-primary" (click)="excelFileDownload()">Download Excel File</button>
+      </div>
     </p-dialog>
   </div>
 </div>

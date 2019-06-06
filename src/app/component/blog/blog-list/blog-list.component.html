@@ -1,0 +1,32 @@
+<div class="container default-margin-top">
+  <div class="row">
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead>
+          <th>S.no</th>
+          <th>Blog Name</th>
+          <th *ngIf="global.checkRollsAndPermission(129) && 
+          (global.checkRollsAndPermission(114) || global.checkRollsAndPermission(115))">
+            Actions
+          </th>
+          <th *ngIf="global.checkRollsAndPermission(130)">Status</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let x of blogListData; let i = index">
+            <td>{{i+1}}</td>
+            <td>{{x.blogName}}</td>
+            <td *ngIf="global.checkRollsAndPermission(129) && 
+            (global.checkRollsAndPermission(114) || global.checkRollsAndPermission(115))" style="cursor: pointer">
+              <i *ngIf="global.checkRollsAndPermission(114)" class="fa fa-pencil mr-2" (click)="blogEdit(x)"></i>
+              <i *ngIf="global.checkRollsAndPermission(115)" class="fa fa-times" (click)="deleteBlog(x._id)"></i></td>
+            <td *ngIf="global.checkRollsAndPermission(130)">
+              <button [class]="(x.active == true) ? 'btn btn-success' : 'btn btn-danger'"
+                (click)="changeBlogStatus(x._id, x.active)">{{(x.active == true) ? 'Active' : 'Inactive'}}
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

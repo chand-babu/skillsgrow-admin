@@ -21,5 +21,9 @@ export const ROUTES: string[] = [
    '/company/dashboard',
     '/company/list',
     '/company/:id',
-    '/company/internship-applied/:companyId/:id'
+    '/company/internship-applied/:companyId/:id',
+    '/blog/create',
+    '/blog/list',
+    '/blog/comment/list',
+    '/blog/edit'
 ]
