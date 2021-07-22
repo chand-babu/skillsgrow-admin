@@ -58,7 +58,7 @@
     "rxjs": "^6.0.0",
     "rxjs-compat": "^6.1.0",
     "summernote": "^0.8.11",
-    "xlsx": "^0.13.0",
+    "xlsx": "^0.17.0",
     "zone.js": "^0.8.26"
   },
   "devDependencies": {
